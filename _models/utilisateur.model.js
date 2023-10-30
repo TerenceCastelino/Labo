@@ -14,6 +14,18 @@ const Utilisateur = sequelize.define('Utilisateur', {
     primaryKey: true,
     autoIncrement: true, // L'idUtilisateur sera auto-incrémenté
   },
+  // _____new________
+  hashedPassword: {
+    type: DataTypes.STRING(250),
+    allowNull: false,
+    // _____________
+},
+ // _______new______
+  jwt: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+  },
+  // _____________
   nom: {
     type: DataTypes.STRING(75),
     allowNull: false,
@@ -87,13 +99,14 @@ const Utilisateur = sequelize.define('Utilisateur', {
   // Options du modèle
   tableName: 'utilisateur', // Nom de la table
   timestamps: true, // Active les champs createdAt et updatedAt
-  // indexes: [
-  //   {
-  //     name: 'UK__Nom',
-  //     fields: [''],
-  //     unique: false,
-  //   },
-  // ],
+  indexes: [
+    {
+        // Création de contraintes
+        name: 'UK_Auth__jwt',
+        fields: ['emailUtilisateur', 'jwt'],
+        unique: false,
+    },
+]
 });
 
 return Utilisateur;

@@ -1,105 +1,5 @@
-// // 1. Importation du service userService pour interagir avec les utilisateurs
-// const utilisateurService = require('../_services/utilisateur.service')
-
-// // 2. Importation du validateur userValidator pour valider les données utilisateur
-
-// const utilisateurValidator = require('../_validators/utilisateur.validator')
-// // 3. Définition du contrôleur specifique  contenant les méthodes de gestion des requêtes
-
-// const utilisateurController = {
-
-//     getAll: async (req, res) => {
-//         const utilisateurDTO = await utilisateurService.allUser();
-//         res.status(200).json(utilisateurDTO);
-//     },
-//     getById: async (req, res) => {
-//         // Récupération de l'id depuis les paramètres
-//         const { id } = req.params;
-
-//         // Vérification de l'id, s'il est d'un autre type que number alors, 400
-//         if (isNaN(id)) {
-//             res.sendStatus(400)
-//             return;
-//         }
-
-//         // Récupération des informations demandées
-//         const utilisateurDTO = await utilisateurService.oneUser(id);
-
-//         // Si pas d'object correspondant à l'id, 404
-//         if (!utilisateurDTO) {
-//             res.sendStatus(404)
-//             return;
-//         }
-
-//         // Si tout s'est bien passé, 200 et envoi des informations
-//         res.status(200).json(utilisateurDTO);
-//     },
-//     add: async (req, res) => {
-//         // On récupère les informations rentrées par l'utilisateur
-//         const utilisateurData = req.body;
-
-//         // Validation des informations rentrées par l'utilisateur
-//         const validatedData = await utilisateurValidator.validate(utilisateurData);
-
-//         // On envoi à la db ls informations
-//         const utilisateurInserted = await utilisateurService.insertUser(validatedData);
-
-
-//         res
-//             // On informe que l'insertion de données s'est correctement déroulée
-//             .status(201)
-//             // On redirige l'utilisateur sur les informations détaillées du personnage qu'il vient de créer (via son id)
-//             .location(`api/utilisateur/${utilisateurInserted.id}`)
-//             // On affiche les informations
-//             .json(utilisateurInserted)
-//     },
-//     // ...
-//     update: async (req, res) => {
-//         // Récupération de l'id depuis les paramètres
-//         const { id } = req.params;
-
-//         // On récupère les données à mettre à jour depuis le corps de la requête
-//         const userData = req.body;
-
-//         // Validation des données de l'utilisateur
-//         const validatedData = await utilisateurValidator.validate(userData);
-
-//         // Mise à jour de l'utilisateur en fonction de l'ID
-//         try {
-//             const updatedUser = await utilisateurService.updateUser(id, validatedData);
-
-//             // Si l'utilisateur est introuvable, retournez un statut 404
-//             if (!updatedUser) {
-//                 res.sendStatus(404);
-//                 return;
-//             }
-
-//             // Retournez l'utilisateur mis à jour avec un statut 200
-//             res.status(200).json(updatedUser);
-//         } catch (error) {
-//             // En cas d'erreur lors de la mise à jour, retournez un statut 400 (Bad Request)
-//             res.sendStatus(400);
-//         }
-//     },
-//     delete: async (req, res) => {
-//         // Récupération de l'id depuis les paramètres
-//         const { id } = req.params;
-
-//         // Envoi de l'id au service pour suppression des infos
-//         const isDeleted = await utilisateurService.deleteUser(id);
-
-//         // Si supprimé, 204
-//         if (isDeleted) {
-//             res.sendStatus(204)
-//             return;
-//         }
-//         // Si pas, 404
-//         res.sendStatus(404);
-//     }
-// }
-// // 4. Exportation du contrôleur specifique  pour être utilisé ailleurs dans l'application
-// module.exports = utilisateurController
-// _____________________________________________________________________
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 // 1. Importation du service userService pour interagir avec les utilisateurs
 const utilisateurService = require('../_services/utilisateur.service');
 
@@ -108,6 +8,87 @@ const utilisateurValidator = require('../_validators/utilisateur.validator');
 
 // 3. Définition du contrôleur spécifique contenant les méthodes de gestion des requêtes
 const utilisateurController = {
+  register: async(req, res) => {
+    // Récupération des données utilsateur
+    const authData = req.body;
+
+    // Validation les informations récupérées depuis les données utilisateur
+    const validatedData = await utilisateurValidator.validate(authData);
+
+    // Destructuring des données vérifées
+    const { emailUtilisateur, motsDePasse } = validatedData;
+    const hashedPassword = bcrypt.hashSync(motsDePasse, 10);
+
+    // Envoi des données validées et hashées à la DB
+    const authInserted = await utilisateurService.insert({emailUtilisateur, hashedPassword});
+
+    if (authInserted) {
+        res
+            // On informe que l'insertion des données s'est correctement déroulée, et que le compte est crée
+            .status(201)
+            // On redirige les informations utilisateur sur la route login (ne pas oublier de gérer la redirection dans le front)
+            // .location(`api/utilisateur/login`)
+            .json(authInserted)
+    }
+},
+  login: async(req, res) => {
+    try {
+        const { emailUtilisateur, motsDePasse } = req.body;
+
+        // Vérification de l'existence de l'utilisateur via son login
+        const user = await utilisateurService.exist(emailUtilisateur);
+        if (!user) {
+            // Si l'utilisateur n'existe pas, renvoi une réponse 401 (Unauthorized)
+            return res.status(401).json({message: 'Utilisateur non trouvé'})
+        }
+
+        // Vérification de l'existence d'un token (jwt) pour cet utilisateur
+        const existingToken = await utilisateurService.getJwt(user.id);
+        if (existingToken.jwt) {
+            // Vérification de la validité du token (jwt)
+            const tokenValid = await utilisateurService.verifyJwt(existingToken.jwt);
+
+            if (tokenValid) {
+                // Le token (jwt) est valide, envoi de l'information dans le header de la requête
+                res.setHeader('Authorization', `Bearer ${existingToken.jwt}`);
+                return res.status(200).json({token: existingToken.jwt});
+            }
+        }
+
+        // Vérification du password fourni par l'utilisateur avec le password hashé dans la DB
+        const passwordMatch = await bcrypt.compare(motsDePasse, user.motsDePasse);
+        if (!passwordMatch) {
+            // Si les mots de passe ne correspondent pas, renvoi une réponse 401 (Unauthorized)
+            return res.status(401).json({message: 'Mot de passe incorrect'})
+        }
+
+        // Si les password correspondent, on va créer un token (jwt) pour l'utilisateur
+        const payload = {
+            userId: user.idUtilisateur,
+            login: user.emailUtilisateur
+        };
+        const options = {
+            expiresIn: '2d',
+        };
+
+        // Signer le token (jwt) avec le SECRET
+        const secret = process.env.JWT_SECRET;
+        const token = jwt.sign(payload, secret, options);
+
+        // Stocker le token (jwt) dans la DB
+        const clientJwt = await utilisateurService.addJwt(token, user.id);
+
+        if (clientJwt) {
+            // Si l'insertion s'est correctement déroulée, on envoi les informations dans le header et au front en json
+            res.setHeader('Authorization', `Bearer ${token}`);
+                return res.status(200).json({ token });
+        }
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(404);
+    }
+  },
+// ______________________________________________________ 
   getAll: async (req, res) => {
     try {
       const utilisateurDTO = await utilisateurService.allUser();
