@@ -72,7 +72,7 @@ const utilisateurService = {
   oneUser: async (id) => {
     try {
       const user = await db.Utilisateur.findOne({
-        where: { id },
+        where: {  idUtilisateur :id },
       });
       return new UtilisateurDTO(user);
     } catch (error) {
@@ -90,7 +90,7 @@ const utilisateurService = {
   deleteUser: async (id) => {
     try {
       const user = await db.Utilisateur.findOne({
-        where: { id },
+        where: { idUtilisateur :id  },
       });
 
       if (!user) {
@@ -107,7 +107,7 @@ const utilisateurService = {
   updateUser: async (id, data) => {
     try {
       const user = await db.Utilisateur.findOne({
-        where: { id },
+        where: { idUtilisateur :id  },
       });
 
       if (!user) {
