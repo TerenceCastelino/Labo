@@ -1,3 +1,4 @@
+// Pour le register de l utilisateur <-------------!!!!!!!!!!!!!!!
 // a. Définition de la classe UserDTO pour représenter un objet de transfert de données (DTO) 
 class UtilisateurDTO{
 // b. Déclaration des propriétés de la classe
@@ -46,5 +47,4 @@ this.jwt = data.jwt
 }
 // f. Exportation de la classe UserDTO pour pouvoir l'utiliser dans d'autres parties de l'application
 module.exports = UtilisateurDTO
-  
   

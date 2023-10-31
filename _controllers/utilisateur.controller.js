@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 // 1. Importation du service userService pour interagir avec les utilisateurs
 const utilisateurService = require('../_services/utilisateur.service');
 
-// 2. Importation du validateur userValidator pour valider les données utilisateur
+// 2. Importation du validateur pour valider les données utilisateur
 const utilisateurValidator = require('../_validators/utilisateur.validator');
+
 
 // 3. Définition du contrôleur spécifique contenant les méthodes de gestion des requêtes
 const utilisateurController = {
@@ -167,12 +168,14 @@ const utilisateurController = {
   
   update: async (req, res) => {
     try {
-      const { id } = req.params;
-      const userData = req.body;
+      const { id } = req.params;//parametre url
+      const utilisateurDTO = await utilisateurService.oneUser(id);
+      const mdpOrigine =utilisateurDTO.motsDePasse
+      const userData = req.body;//collecte du message json
+      userData.motsDePasse = mdpOrigine //copie l ancien mdp afin de ne pas pouvoir le modif ici
       const validatedData = await utilisateurValidator.validate(userData);
-
       const updatedUser = await utilisateurService.updateUser(id, validatedData);
-
+      
       if (!updatedUser) {
         res.sendStatus(404);
         return;
