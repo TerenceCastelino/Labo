@@ -14,8 +14,10 @@ utilisateurRouter.route('/login')
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });
+  utilisateurRouter.route('/updateMDP/:id')
+  .post(utilisateurController.updatMdp)
 
-utilisateurRouter.route('/register')
+  utilisateurRouter.route('/register')
   .post(utilisateurController.register)
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)

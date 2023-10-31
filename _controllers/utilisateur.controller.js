@@ -5,6 +5,7 @@ const utilisateurService = require('../_services/utilisateur.service');
 
 // 2. Importation du validateur pour valider les données utilisateur
 const utilisateurValidator = require('../_validators/utilisateur.validator');
+const mdpValidator = require('../_validators/mdp.validator');
 
 
 // 3. Définition du contrôleur spécifique contenant les méthodes de gestion des requêtes
@@ -133,6 +134,40 @@ const utilisateurController = {
         res.sendStatus(404);
     }
   },
+  updatMdp: async(req, res) => {
+    console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+    const { id } = req.params;//parametre url id
+    const utilisateurDTO = await utilisateurService.oneUser(id);
+    console.log(`utilisateur dto ___________________________________${utilisateurDTO}`)//console.log(`${}`);
+    // Récupération des données utilsateur
+    const passwordData = req.body;
+    console.log(`passwordData_________________________________________${passwordData}`);
+  // console.log(authData);
+    // Validation les informations récupérées depuis les données utilisateur
+    const validatedData = await mdpValidator.validate(passwordData);
+    console.log(`validatedData________________________________________${validatedData}`);
+    const updatedUser = await utilisateurService.updateUser(id, validatedData);
+    console.log(`updatedUser____________________________________________${updatedUser}`);
+    // Destructuring des données vérifées
+    const { motsDePasse } = validatedData;
+    console.log(`motsDePasse____________________________________________${motsDePasse}`);
+    const hashedPassword = bcrypt.hashSync(motsDePasse, 10);
+    console.log(`hashedPassword__________________________________________${hashedPassword}`);
+
+    // Envoi des données validées et hashées à la DB
+    const authInserted = await utilisateurService.insert({
+      motsDePasse,
+      hashedPassword});
+      console.log(`authInserted_________________________________________________${authInserted}`);
+    if (authInserted) {
+        res
+            // On informe que l'insertion des données s'est correctement déroulée, et que le compte est crée
+            .status(201)
+            // On redirige les informations utilisateur sur la route login (ne pas oublier de gérer la redirection dans le front)
+            // .location(`api/utilisateur/login`)
+            .json(authInserted)
+    }
+},
 // ______________________________________________________ 
   getAll: async (req, res) => {
     try {
