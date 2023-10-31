@@ -11,16 +11,53 @@ const utilisateurController = {
   register: async(req, res) => {
     // Récupération des données utilsateur
     const authData = req.body;
-
+  // console.log(authData);
     // Validation les informations récupérées depuis les données utilisateur
     const validatedData = await utilisateurValidator.validate(authData);
 
     // Destructuring des données vérifées
-    const { emailUtilisateur, motsDePasse } = validatedData;
+    const { 
+      emailUtilisateur, 
+      idUtilisateur,
+      nom,
+      prenom,
+      motsDePasse,
+      dateDeNaissance,
+      role,
+      genre,
+      idPhotoProfil,
+      derniereConnexion,
+      facebook,
+      snapchat,
+      instagram,
+      tictoc,
+      twitter,
+      telephone,
+      gsm,
+  } = validatedData;
     const hashedPassword = bcrypt.hashSync(motsDePasse, 10);
 
     // Envoi des données validées et hashées à la DB
-    const authInserted = await utilisateurService.insert({emailUtilisateur, hashedPassword});
+    const authInserted = await utilisateurService.insert({
+      idUtilisateur,
+      nom,
+      prenom,
+      emailUtilisateur,
+      motsDePasse,
+      dateDeNaissance,
+      role,
+      genre,
+      idPhotoProfil,
+      derniereConnexion,
+      facebook,
+      snapchat,
+      instagram,
+      tictoc,
+      twitter,
+      telephone,
+      gsm,
+      emailUtilisateur, 
+      hashedPassword});
 
     if (authInserted) {
         res
@@ -34,7 +71,7 @@ const utilisateurController = {
   login: async(req, res) => {
     try {
         const { emailUtilisateur, motsDePasse } = req.body;
-
+      // console.log(emailUtilisateur, motsDePasse);
         // Vérification de l'existence de l'utilisateur via son login
         const user = await utilisateurService.exist(emailUtilisateur);
         if (!user) {
@@ -43,7 +80,7 @@ const utilisateurController = {
         }
 
         // Vérification de l'existence d'un token (jwt) pour cet utilisateur
-        const existingToken = await utilisateurService.getJwt(user.id);
+        const existingToken = await utilisateurService.getJwt(user.idUtilisateur);
         if (existingToken.jwt) {
             // Vérification de la validité du token (jwt)
             const tokenValid = await utilisateurService.verifyJwt(existingToken.jwt);
@@ -56,10 +93,16 @@ const utilisateurController = {
         }
 
         // Vérification du password fourni par l'utilisateur avec le password hashé dans la DB
-        const passwordMatch = await bcrypt.compare(motsDePasse, user.motsDePasse);
+        const passwordMatch = await bcrypt.compareSync(motsDePasse, user.hashedPassword);
+        // console.log(user.hashedPassword);
+        // console.log(motsDePasse);
+        // console.log(passwordMatch);
         if (!passwordMatch) {
             // Si les mots de passe ne correspondent pas, renvoi une réponse 401 (Unauthorized)
             return res.status(401).json({message: 'Mot de passe incorrect'})
+        }
+        if (passwordMatch) {
+          console.log("utilisateur connecter");
         }
 
         // Si les password correspondent, on va créer un token (jwt) pour l'utilisateur
@@ -67,6 +110,7 @@ const utilisateurController = {
             userId: user.idUtilisateur,
             login: user.emailUtilisateur
         };
+        
         const options = {
             expiresIn: '2d',
         };
@@ -76,7 +120,7 @@ const utilisateurController = {
         const token = jwt.sign(payload, secret, options);
 
         // Stocker le token (jwt) dans la DB
-        const clientJwt = await utilisateurService.addJwt(token, user.id);
+        const clientJwt = await utilisateurService.addJwt(token, user.idUtilisateur);
 
         if (clientJwt) {
             // Si l'insertion s'est correctement déroulée, on envoi les informations dans le header et au front en json
@@ -120,21 +164,7 @@ const utilisateurController = {
       res.status(500).json({ error: 'Erreur de service' });
     }
   },
-  add: async (req, res) => {
-    try {
-      const utilisateurData = req.body;
-      const validatedData = await utilisateurValidator.validate(utilisateurData);
-      const utilisateurInserted = await utilisateurService.insertUser(validatedData);
-
-      res
-        .status(201)
-        .location(`api/utilisateur/${utilisateurInserted.id}`)
-        .json(utilisateurInserted);
-    } catch (error) {
-      console.error('Erreur lors de l\'insertion d\'un utilisateur :', error);
-      res.status(400).json({ error: 'Données invalides' });
-    }
-  },
+  
   update: async (req, res) => {
     try {
       const { id } = req.params;

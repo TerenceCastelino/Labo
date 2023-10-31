@@ -11,9 +11,14 @@ const utilisateurService = {
         });
         return new UtilisateurDTO(user);
     },
+    insert: async (data) => {
+        const auth = await db.Utilisateur.create(data)
+        return new UtilisateurDTO(auth)
+    },
     
     // Associe un jeton JWT à un utilisateur
     addJwt: async (jwt, id) => {
+        console.log('idddddddddd : ', id);
         // Vérification de l'existence de l'utilisateur
         const userFound = await db.Utilisateur.findOne({
             where: { idUtilisateur: id }
@@ -41,7 +46,7 @@ const utilisateurService = {
             return false;
         }
     },
-    
+//  __________________________________________    
     // Récupère tous les utilisateurs
     allUser: async () => {
         try {

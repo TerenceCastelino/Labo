@@ -18,6 +18,8 @@ tictoc
 twitter
 telephone
 gsm
+hashedPassword
+jwt
 // c. Constructeur de la classe qui prend des données en entrée et initialise les propriétés
 constructor(data) {
 // e. Initialisation des propriétés avec les données fournies en tant que paramètre
@@ -38,6 +40,8 @@ this.tictoc= data.tictoc
 this.twitter= data.twitter
 this.telephone= data.telephone
 this.gsm = data.gsm
+this.hashedPassword = data.hashedPassword
+this.jwt = data.jwt
     }
 }
 // f. Exportation de la classe UserDTO pour pouvoir l'utiliser dans d'autres parties de l'application

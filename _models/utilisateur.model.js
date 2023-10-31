@@ -17,7 +17,7 @@ const Utilisateur = sequelize.define('Utilisateur', {
   // _____new________
   hashedPassword: {
     type: DataTypes.STRING(250),
-    allowNull: false,
+    allowNull: true,
     // _____________
 },
  // _______new______
@@ -45,7 +45,7 @@ const Utilisateur = sequelize.define('Utilisateur', {
   },
   dateDeNaissance: {
     type: DataTypes.DATEONLY,
-    allowNull: true,
+    allowNull: false,
     validate: {
       isDate: true,
       isBefore: new Date().toISOString().split('T')[0], // Date actuelle
