@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 // 1. Importation du service userService pour interagir avec les utilisateurs
 const utilisateurService = require('../_services/utilisateur.service');
 
@@ -40,7 +41,7 @@ const utilisateurController = {
     const hashedPassword = bcrypt.hashSync(motsDePasse, 10);
 
     // Envoi des données validées et hashées à la DB
-    const authInserted = await utilisateurService.insert({
+    const authInserted = await utilisateurService.insertUser({
       idUtilisateur,
       nom,
       prenom,
@@ -96,9 +97,6 @@ const utilisateurController = {
 
         // Vérification du password fourni par l'utilisateur avec le password hashé dans la DB
         const passwordMatch = await bcrypt.compareSync(motsDePasse, user.hashedPassword);
-        // console.log(user.hashedPassword);
-        // console.log(motsDePasse);
-        // console.log(passwordMatch);
         if (!passwordMatch) {
             // Si les mots de passe ne correspondent pas, renvoi une réponse 401 (Unauthorized)
             return res.status(401).json({message: 'Mot de passe incorrect'})
@@ -134,40 +132,40 @@ const utilisateurController = {
         res.sendStatus(404);
     }
   },
-  updatMdp: async(req, res) => {
-    console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-    const { id } = req.params;//parametre url id
-    const utilisateurDTO = await utilisateurService.oneUser(id);
-    console.log(`utilisateur dto ___________________________________${utilisateurDTO}`)//console.log(`${}`);
-    // Récupération des données utilsateur
-    const passwordData = req.body;
-    console.log(`passwordData_________________________________________${passwordData}`);
-  // console.log(authData);
-    // Validation les informations récupérées depuis les données utilisateur
-    const validatedData = await mdpValidator.validate(passwordData);
-    console.log(`validatedData________________________________________${validatedData}`);
-    const updatedUser = await utilisateurService.updateUser(id, validatedData);
-    console.log(`updatedUser____________________________________________${updatedUser}`);
-    // Destructuring des données vérifées
-    const { motsDePasse } = validatedData;
-    console.log(`motsDePasse____________________________________________${motsDePasse}`);
-    const hashedPassword = bcrypt.hashSync(motsDePasse, 10);
-    console.log(`hashedPassword__________________________________________${hashedPassword}`);
+  updateMdp: async (req, res) => {
+    try {
+      const { id } = req.params; // Paramètre d'URL id
+      const utilisateurDTO = await utilisateurService.oneUser(id); // Récupération des données utilisateur
+      const passwordData = req.body;
+      // Validation des informations récupérées depuis les données utilisateur
+      const validatedData = await mdpValidator.validate(passwordData);
 
-    // Envoi des données validées et hashées à la DB
-    const authInserted = await utilisateurService.insert({
-      motsDePasse,
-      hashedPassword});
-      console.log(`authInserted_________________________________________________${authInserted}`);
-    if (authInserted) {
-        res
-            // On informe que l'insertion des données s'est correctement déroulée, et que le compte est crée
-            .status(201)
-            // On redirige les informations utilisateur sur la route login (ne pas oublier de gérer la redirection dans le front)
-            // .location(`api/utilisateur/login`)
-            .json(authInserted)
+      // Destructuration des données vérifiées
+      const { motsDePasse } = validatedData;
+
+      // Ré-hachage du mot de passe
+      const hashedPassword = bcrypt.hashSync(motsDePasse, 10);
+
+      // Mettre à jour les propriétés de l'utilisateur
+      utilisateurDTO.motsDePasse = motsDePasse;
+      utilisateurDTO.hashedPassword = hashedPassword;
+
+      // Mettre à jour l'utilisateur dans la base de données
+      const updatedUser = await utilisateurService.updateUser(id, utilisateurDTO);
+
+      if (!updatedUser) {
+        res.sendStatus(404);
+        return;
+      }
+
+      res.status(200).json(updatedUser);
+
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour :', error);
+      res.status(400).json({ error: 'Erreur lors de la mise à jour' });
     }
-},
+  },
+
 // ______________________________________________________ 
   getAll: async (req, res) => {
     try {
@@ -242,3 +240,20 @@ const utilisateurController = {
 
 // 4. Exportation du contrôleur spécifique pour être utilisé ailleurs dans l'application
 module.exports = utilisateurController;
+// {
+//   "nom": "Morgan",
+//   "prenom": "Clara",
+//   "emailUtilisateur": "clara.morgan@example.com",
+//   "motsDePasse": "pppllllp",
+//   "dateDeNaissance": "1995-08-15",
+//   "role": "utilisateur",
+//   "genre": "F",
+//   "facebook": "https://www.facebook.com/clarajmorgan",
+//   "snapchat": "https://www.snapchat.com/clarajmorgan",
+//   "instagram": "https://www.instagram.com/clarajmorgan",
+//   "tictoc": "https://www.tictoc.com/clarajmorgan",
+//   "twitter": "https://www.twitter.com/clarajmorgan",
+//   "telephone": "9876543210",
+//   "gsm": "1234567890"
+  
+// }

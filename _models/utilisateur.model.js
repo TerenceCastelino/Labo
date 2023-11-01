@@ -14,12 +14,16 @@ const Utilisateur = sequelize.define('Utilisateur', {
     primaryKey: true,
     autoIncrement: true, // L'idUtilisateur sera auto-incrémenté
   },
+  motsDePasse: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   // _____new________
   hashedPassword: {
     type: DataTypes.STRING(250),
     allowNull: true,
     // _____________
-},
+  },
  // _______new______
   jwt: {
     type: DataTypes.STRING(500),
@@ -39,10 +43,7 @@ const Utilisateur = sequelize.define('Utilisateur', {
     allowNull: false,
     unique: true,
   },
-  motsDePasse: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
+  
   dateDeNaissance: {
     type: DataTypes.DATEONLY,
     allowNull: false,
@@ -111,3 +112,4 @@ const Utilisateur = sequelize.define('Utilisateur', {
 
 return Utilisateur;
  }
+ 

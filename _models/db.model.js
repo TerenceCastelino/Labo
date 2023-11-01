@@ -8,6 +8,7 @@ const { NAME_LOGING, PASSWORD, NAME_DATABASE} = process.env;
 const sequelize = new Sequelize(NAME_DATABASE, NAME_LOGING, PASSWORD, {
   host: 'localhost', // Spécifie l'adresse du serveur de base de données
   dialect: 'mssql', // Utilisez le dialecte 'mssql' pour SQL Server
+  logging: false, // Désactive la sortie des requêtes SQL
   dialectOptions: {
     options: {
       trustServerCertificate: true, // Activez cette option si vous utilisez un certificat auto-signé

@@ -15,7 +15,7 @@ utilisateurRouter.route('/login')
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });
   utilisateurRouter.route('/updateMDP/:id')
-  .post(utilisateurController.updatMdp)
+  .put(utilisateurController.updateMdp)
 
   utilisateurRouter.route('/register')
   .post(utilisateurController.register)

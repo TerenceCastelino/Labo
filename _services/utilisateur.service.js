@@ -12,10 +12,7 @@ const utilisateurService = {
         });
         return new UtilisateurDTO(user);
     },
-    insert: async (data) => {
-        const auth = await db.Utilisateur.create(data)
-        return new UtilisateurDTO(auth)
-    },
+    
     
     // Associe un jeton JWT à un utilisateur
     addJwt: async (jwt, id) => {

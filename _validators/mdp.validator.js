@@ -7,7 +7,10 @@ const { object } = require('yup');
 
 // c. Définition du schéma de validation pour les utilisateurs en utilisant Yup
 const mdpValidator = object({
+    idUtilisateur: yup.number(),
     motsDePasse: yup.string().min(5).max(20).required(),
+    emailUtilisateur: yup.string().email().required(),
+    hashedPassword : yup.string()
 });
 
 // d. Exportation du schéma de validation "userValidator" pour être utilisé ailleurs dans l'application
