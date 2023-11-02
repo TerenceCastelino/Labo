@@ -1,0 +1,15 @@
+{
+    "nom": "Del Rio",
+    "prenom": "Olivia",
+    "emailUtilisateur": "olivia@example.com",
+    "motsDePasse": "123456789",
+    "dateDeNaissance": "1979-08-29",
+    "role": "utilisateur",
+    "genre": "F",
+    "facebook": "https://www.facebook.com/OliviaDelRio",
+    "snapchat": "https://www.snapchat.com/OliviaDelRio",
+    "instagram": "https://www.instagram.com/oliviadelrio",
+    "twitter": "https://twitter.com/OliviaDelRioOfficial",
+    "telephone": "123-456-7890",
+    "gsm": "987-654-3210"
+}

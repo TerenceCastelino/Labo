@@ -24,6 +24,7 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 // Importe un modèle spécifique de la base de données à partir d'un fichier externe
 db.Utilisateur = require('./utilisateur.model')(sequelize);
+db.Contenu = require('./constenu.model')(sequelize)
 
 
 module.exports = db;

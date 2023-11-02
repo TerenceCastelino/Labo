@@ -240,20 +240,3 @@ const utilisateurController = {
 
 // 4. Exportation du contrôleur spécifique pour être utilisé ailleurs dans l'application
 module.exports = utilisateurController;
-// {
-//   "nom": "Morgan",
-//   "prenom": "Clara",
-//   "emailUtilisateur": "clara.morgan@example.com",
-//   "motsDePasse": "pppllllp",
-//   "dateDeNaissance": "1995-08-15",
-//   "role": "utilisateur",
-//   "genre": "F",
-//   "facebook": "https://www.facebook.com/clarajmorgan",
-//   "snapchat": "https://www.snapchat.com/clarajmorgan",
-//   "instagram": "https://www.instagram.com/clarajmorgan",
-//   "tictoc": "https://www.tictoc.com/clarajmorgan",
-//   "twitter": "https://www.twitter.com/clarajmorgan",
-//   "telephone": "9876543210",
-//   "gsm": "1234567890"
-  
-// }

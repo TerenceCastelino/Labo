@@ -25,10 +25,7 @@ const utilisateurValidator = object({
     twitter: yup.string().url(),
     telephone: yup.string().min(9).max(13),
     gsm: yup.string().min(10).max(14),
-    
-    
-    
-
+   
 });
 
 // d. Exportation du schéma de validation "userValidator" pour être utilisé ailleurs dans l'application
