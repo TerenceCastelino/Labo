@@ -7,11 +7,7 @@ const { object } = require('yup');
 
 // c. Définition du schéma de validation pour les utilisateurs en utilisant Yup
 const contenuValidator = object({
-    idUtilisateur: yup.number().required(),
-    idContenu:yup.number().required(),
-    chemin : yup.string().required(),
     typeContenu:yup.string(5).oneOf(['image','video']).required(),
-    dateDeCreation :yup.date(),
     nom: yup.string(),
 });
 

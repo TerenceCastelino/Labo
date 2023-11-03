@@ -1,5 +1,6 @@
 const utilisateurRouter = require('express').Router();
 const utilisateurController = require('../_controllers/utilisateur.controller');
+const {contenuController, uploadMiddelware} = require('../_controllers/constenuController')
 
 // Route pour gérer toutes les requêtes HTTP vers '/utilisateur'
 utilisateurRouter.route('/')
@@ -16,6 +17,9 @@ utilisateurRouter.route('/login')
   });
   utilisateurRouter.route('/updateMDP/:id')
   .put(utilisateurController.updateMdp)
+
+  utilisateurRouter.route('/profil/:id')
+  .post(uploadMiddelware,contenuController.addContenu)
 
   utilisateurRouter.route('/register')
   .post(utilisateurController.register)

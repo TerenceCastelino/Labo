@@ -14,7 +14,6 @@ class ContenuDTO  {
     this.typeContenu = data.typeContenu
     this.idUtilisateur = data.idUtilisateur
     this.nom =  data.nom 
-    this.dateDeCreation =data.dateDeCreation
     }
 }
 
