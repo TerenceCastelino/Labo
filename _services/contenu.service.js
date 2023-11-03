@@ -1,3 +1,4 @@
+const fs = require('fs')
 const contenuDTO = require('../_dto/contenu.dto')
 const db = require('../_models/db.model')
 const { Op } = require('sequelize');
@@ -16,23 +17,40 @@ const contenuService = {
             throw error;
         }
     },
-    deleteContenu: async (id) => {
-        try {
-            const contenu = await db.Contenu.findOne({
-                where: { idContenu: id },
-            });
-    
-            if (!contenu) {
-                throw new Error('Contenu non trouvé');
-            }
-    
-            await contenu.destroy();
-    
-            return 'Contenu supprimé avec succès';
-        } catch (error) {
-            throw error;
+  
+    deleteContenu: async (idContenu, idUtilisateur) => {
+    try {
+        // Recherchez le contenu en spécifiant à la fois idContenu et idUtilisateur
+        const contenu = await db.Contenu.findOne({
+        where: { idContenu, idUtilisateur },
+        });
+
+        if (!contenu) {
+        throw new Error('Contenu non trouvé pour cet utilisateur');
         }
-    },oneContenuForUser: async (idUtilisateur, idContenu) => {
+
+        // Obtenez le chemin du fichier associé à ce contenu
+        const cheminFichier = contenu.chemin;
+
+        await contenu.destroy();
+
+        // Supprimez le fichier du système de fichiers
+        fs.unlink(cheminFichier, (err) => {
+        if (err) {
+            throw err; // Gérez les erreurs en conséquence
+        }
+        console.log('Fichier supprimé avec succès');
+        });
+
+        return 'Contenu supprimé avec succès';
+    } catch (error) {
+        throw error;
+    }
+    },
+
+      
+      
+    oneContenuForUser: async (idUtilisateur, idContenu) => {
         try {
             const contenu = await db.Contenu.findOne({
                 where: { idContenu, idUtilisateur },

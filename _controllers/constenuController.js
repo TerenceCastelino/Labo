@@ -46,6 +46,23 @@ const contenuController = {
             res.status(400).json({ error: 'Erreur lors de l\'insertion du contenu' });
           }
         },
+        delete: async (req, res) => {
+            try {
+              const { id } = req.params;
+              const { idContenu } = req.params;
+              const isDeleted = await contenuService.deleteContenu(idContenu,id);
+        
+              if (isDeleted) {
+                res.sendStatus(204);
+                return;
+              }
+        
+              res.sendStatus(404);
+            } catch (error) {
+              console.error('Erreur lors de la suppression d\'un utilisateur :', error);
+              res.status(400).json({ error: 'Erreur lors de la suppression' });
+            }
+          }
       };
 
 const uploadMiddelware =  upload.single('contenu')

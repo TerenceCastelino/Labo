@@ -18,8 +18,10 @@ utilisateurRouter.route('/login')
   utilisateurRouter.route('/updateMDP/:id')
   .put(utilisateurController.updateMdp)
 
-  utilisateurRouter.route('/profil/:id')
+  utilisateurRouter.route('/profil/:id/')
   .post(uploadMiddelware,contenuController.addContenu)
+  utilisateurRouter.route('/profil/:id/:idContenu')
+  .delete(contenuController.delete)
 
   utilisateurRouter.route('/register')
   .post(utilisateurController.register)
