@@ -46,10 +46,7 @@ const contenuService = {
     } catch (error) {
         throw error;
     }
-    },
-
-      
-      
+    }, 
     oneContenuForUser: async (idUtilisateur, idContenu) => {
         try {
             const contenu = await db.Contenu.findOne({
@@ -132,11 +129,7 @@ const contenuService = {
         } catch (error) {
             throw error;
         }
-    },
-    
-    
-    
-    
+    },   
     
 }
 module.exports = contenuService
