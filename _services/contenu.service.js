@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 
 
 const contenuService = {
-    
+    //ok
     insertContenu: async (data, idUtilisateur) => {
         try {
             // Créez un nouveau contenu associé à l'utilisateur avec l'ID spécifié
@@ -17,7 +17,7 @@ const contenuService = {
             throw error;
         }
     },
-  
+    //ok
     deleteContenu: async (idContenu, idUtilisateur) => {
     try {
         // Recherchez le contenu en spécifiant à la fois idContenu et idUtilisateur
@@ -47,6 +47,7 @@ const contenuService = {
         throw error;
     }
     }, 
+    //ok
     oneContenuForUser: async (idUtilisateur, idContenu) => {
         try {
             const contenu = await db.Contenu.findOne({
@@ -62,46 +63,7 @@ const contenuService = {
             throw error;
         }
     },
-    oneVideoContenuForUser: async (idUtilisateur, idContenu) => {
-        try {
-            const contenu = await db.Contenu.findOne({
-                where: {
-                    idContenu,
-                    idUtilisateur,
-                    typeContenu: 'video', // Filtre pour les contenus de type vidéo
-                },
-            });
-    
-            if (!contenu) {
-                throw new Error('Contenu vidéo non trouvé pour cet utilisateur');
-            }
-    
-            return new contenuDTO(contenu);
-        } catch (error) {
-            throw error;
-        }
-    },
-    
-    oneImageContenuForUser: async (idUtilisateur, idContenu) => {
-        try {
-            const contenu = await db.Contenu.findOne({
-                where: {
-                    idContenu,
-                    idUtilisateur,
-                    typeContenu: 'image', // Filtre pour les contenus de type image
-                },
-            });
-    
-            if (!contenu) {
-                throw new Error('Contenu image non trouvé pour cet utilisateur');
-            }
-    
-            return new contenuDTO(contenu);
-        } catch (error) {
-            throw error;
-        }
-    },
-    
+    //ok
     allImageContenusForUser: async (idUtilisateur) => {
         try {
             const contenus = await db.Contenu.findAll({
@@ -116,6 +78,7 @@ const contenuService = {
             throw error;
         }
     },
+    //ok
     allVideoContenusForUser: async (idUtilisateur) => {
         try {
             const contenus = await db.Contenu.findAll({

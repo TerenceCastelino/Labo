@@ -20,8 +20,16 @@ utilisateurRouter.route('/login')
 
   utilisateurRouter.route('/profil/:id/')
   .post(uploadMiddelware,contenuController.addContenu)
+
+  utilisateurRouter.route('/profil/:id/images')
+  .get(contenuController.getAllImage)
+
+  utilisateurRouter.route('/profil/:id/videos')
+  .get(contenuController.getAllVideo)
+
   utilisateurRouter.route('/profil/:id/:idContenu')
   .delete(contenuController.delete)
+  .get(contenuController.getOneContenu)
 
   utilisateurRouter.route('/register')
   .post(utilisateurController.register)
