@@ -1,0 +1,2 @@
+changement du mots de passe fonctionne
+mais il faut s assurer que le mail corresponde a l id pour pouvoir changer le mots de passe
