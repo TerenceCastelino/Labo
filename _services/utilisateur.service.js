@@ -1,7 +1,6 @@
 const UtilisateurDTO = require('../_dto/utilisateur.dto');
 
 const db = require('../_models/db.model');
-// const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 
 const utilisateurService = {   
@@ -17,10 +16,10 @@ const utilisateurService = {
     },
     
     // Récupère un utilisateur par son ID
-    oneUser: async (id) => {
+    oneUser: async (idUtilisateur) => {
         try {
             const user = await db.Utilisateur.findOne({
-                where: { idUtilisateur: id },
+                where: { idUtilisateur},
             });
             return new UtilisateurDTO(user);
         } catch (error) {
@@ -64,6 +63,8 @@ const utilisateurService = {
             throw error;
         }
     },
+
+
 };
 
 module.exports = utilisateurService;

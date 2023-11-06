@@ -1,6 +1,7 @@
 const utilisateurRouter = require('express').Router();
 const utilisateurController = require('../_controllers/utilisateur.controller');
-const {contenuController, uploadMiddelware} = require('../_controllers/constenuController')
+const photoProfilController =  require('../_controllers/photoProfil.controller')
+
 
 // Route pour gérer toutes les requêtes HTTP vers '/utilisateur'
 
@@ -12,6 +13,12 @@ utilisateurRouter.route('/')
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });
 
+  utilisateurRouter.route('/profil')
+  .get(photoProfilController.getAllProfilePhotos)
+  .all((req, res) => {
+    res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+  });
+
 // Route pour gérer les requêtes HTTP vers '/utilisateur/updateMDP/:id'
 utilisateurRouter.route('/updateMDP/:id')
   .put(utilisateurController.updateMdp)
@@ -19,6 +26,12 @@ utilisateurRouter.route('/updateMDP/:id')
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });
 
+
+  utilisateurRouter.route('/:id/:idContenu/profil')
+  .put(photoProfilController.updateImgProfil)
+  .all((req, res) => {
+    res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+  });
   
 // Route pour gérer les requêtes HTTP vers '/utilisateur/:id'
 utilisateurRouter.route('/:id')

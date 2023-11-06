@@ -1,7 +1,9 @@
 const fs = require('fs')
 const contenuDTO = require('../_dto/contenu.dto')
+
 const db = require('../_models/db.model')
 const { Op } = require('sequelize');
+
 
 
 
@@ -53,7 +55,8 @@ const contenuService = {
             const contenu = await db.Contenu.findOne({
                 where: { idContenu, idUtilisateur },
             });
-    
+
+
             if (!contenu) {
                 throw new Error('Contenu non trouvé pour cet utilisateur');
             }

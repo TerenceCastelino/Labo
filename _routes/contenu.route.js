@@ -29,6 +29,11 @@ contenuRouter.route('/:id/:idContenu')
   .get(contenuController.getOneContenu)
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
-  });  
-
+  });
+  
+// contenuRouter.route('/:id/:idContenu/profil')
+// .get(contenuController.selectImgProfil)
+// .all((req, res) => {
+//   res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+// });
 module.exports = contenuRouter

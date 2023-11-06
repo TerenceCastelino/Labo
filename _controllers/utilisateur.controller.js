@@ -24,9 +24,6 @@ const utilisateurController = {
 
       // Destructuration des données vérifiées
       const { motsDePasse,idUtilisateur,emailUtilisateur } = validatedData;
-    
-      console.log(idUtilisateur);
-      console.log(id);
 
       if (idUtilisateur == id && utilisateur.emailUtilisateur == emailUtilisateur) {
         // Ré-hachage du mot de passe
@@ -52,9 +49,6 @@ const utilisateurController = {
         // console.error('Erreur lors de la mise à jour :', error);
       res.status(400).json({ error: 'id incorrecte' });
       }
-      
-
-     
 
     } catch (error) {
       console.error('Erreur lors de la mise à jour :', error);
@@ -62,7 +56,6 @@ const utilisateurController = {
     }
   },
 
-// ______________________________________________________ 
   getAll: async (req, res) => {
     try {
       const utilisateur = await utilisateurService.allUser();
@@ -72,6 +65,7 @@ const utilisateurController = {
       res.status(500).json({ error: 'Erreur de service' });
     }
   },
+
   getById: async (req, res) => {
     try {
       const { id } = req.params;
@@ -82,6 +76,7 @@ const utilisateurController = {
       }
 
       const utilisateur = await utilisateurService.oneUser(id);
+      console.log(utilisateur.emailUtilisateur);
 
       if (!utilisateur) {
         res.sendStatus(404);
