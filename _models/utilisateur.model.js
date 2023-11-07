@@ -1,4 +1,5 @@
 const {Sequelize, DataTypes, ModelStatic } = require('sequelize');
+const db = require('./db.model')
 
 /**
  * Fonction pour créer un model Character (donc table de db)
@@ -103,9 +104,9 @@ module.exports = (sequelize) => {
     ],
   });
 
-  Utilisateur.associate = (models) => {
-    Utilisateur.hasMany(models.Contenu, { foreignKey: 'idUtilisateur' });
-  };
+  
+    
+  
 
   return Utilisateur;
 };

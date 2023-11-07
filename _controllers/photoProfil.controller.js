@@ -32,8 +32,9 @@ updateImgProfil: async (req, res) => {
   },
   getAllProfilePhotos: async (req, res) => {
     try {
-      console.log('cooooooooooooonnnntroller');
+      
       const profilePhotos = await photoProfilService.getAllProfilePhotos();
+      
       res.status(200).json(profilePhotos);
     } catch (error) {
       console.error('Erreur lors de la récupération des photos de profil :', error);

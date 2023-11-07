@@ -26,5 +26,6 @@ db.Sequelize = Sequelize;
 db.Utilisateur = require('./utilisateur.model')(sequelize);
 db.Contenu = require('./constenu.model')(sequelize)
 
-
+db.Utilisateur.hasMany(db.Contenu,{foreignKey:'idUtilisateur'})
+db.Contenu.belongsTo(db.Utilisateur)
 module.exports = db;
