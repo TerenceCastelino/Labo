@@ -31,4 +31,5 @@ app.use('/api',route)
 app.listen(PORT, () => {
     console.log(`Web server running on port ${PORT}`);
 });
+module.exports = app
 

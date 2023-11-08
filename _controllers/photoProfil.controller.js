@@ -3,11 +3,6 @@ const utilisateurService = require('../_services/utilisateur.service');
 const photoProfilService = require('../_services/photoProfil.service')
 const contenuService = require('../_services/contenu.service')
 
-// 2. Importation du validateur pour valider les données utilisateur
-// const utilisateurValidator = require('../_validators/utilisateur.validator');
-
-// const mdpValidator = require('../_validators/mdp.validator');
-
 const photoProfil ={
 
 updateImgProfil: async (req, res) => {
