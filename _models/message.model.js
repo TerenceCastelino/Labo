@@ -8,37 +8,118 @@ const db = require('./db.model')
  * @returns {ModelStatic<any>}
  */
 
+// module.exports = (sequelize) => {
+//     const Message = sequelize.define('Message', {
+//       idMessage: {
+//         type: DataTypes.INTEGER,
+//         primaryKey: true,
+//         autoIncrement: true,
+//       },
+//       idDestinataire: {
+//         type: DataTypes.INTEGER,
+//         allowNull: false,
+//       },
+//       idExpediteur: {
+//         type: DataTypes.INTEGER,
+//         allowNull: false,
+//       },
+//       contenuMessage: {
+//         type: DataTypes.TEXT,
+//         allowNull: false,
+//       },
+//       note: {
+//         type: DataTypes.ENUM('like', 'dislike'),
+//         allowNull: true,
+//       },
+//       idGroup: {
+//         type : DataTypes.INTEGER,
+//         allowNull:true,
+//       }
+//     }, {
+//       tableName: 'messages', // Vous pouvez définir le nom de la table ici
+//       timestamps: true, // Si vous souhaitez utiliser les champs createdAt et updatedAt
+//       indexes: [
+//         // Définissez vos index ici si nécessaire
+//       ],
+//     });
+  
+  
+//     return Message;
+//   };
+
+// db.model.js
+
+
+// module.exports = (sequelize) => {
+//     const Message = sequelize.define('Message', {
+//         idMessage: {
+//             type: DataTypes.INTEGER,
+//             primaryKey: true,
+//             autoIncrement: true,
+//         },
+//         idDestinataire: {
+//             type: DataTypes.INTEGER,
+//             allowNull: false,
+//         },
+//         idExpediteur: {
+//             type: DataTypes.INTEGER,
+//             allowNull: false,
+//         },
+//         contenuMessage: {
+//             type: DataTypes.TEXT,
+//             allowNull: false,
+//         },
+//         note: {
+//             type: DataTypes.ENUM('like', 'dislike'),
+//             allowNull: true,
+//         },
+//         idGroup: {
+//             type: DataTypes.INTEGER,
+//             allowNull: true,
+//         }
+//     }, {
+//         tableName: 'messages',
+//         timestamps: true,
+//         indexes: [],
+//     });
+
+//     return Message;
+// };
+
+
+
 module.exports = (sequelize) => {
     const Message = sequelize.define('Message', {
-      idMessage: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      idDestinataire: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      idExpediteur: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      contenuMessage: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      note: {
-        type: DataTypes.ENUM('like', 'pas_like'),
-        allowNull: true,
-      },
+        idMessage: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        idDestinataire: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        idExpediteur: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        contenuMessage: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
+        note: {
+            type: DataTypes.ENUM('like', 'dislike'),
+            allowNull: true,
+        },
+        idGroup: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        }
     }, {
-      tableName: 'messages', // Vous pouvez définir le nom de la table ici
-      timestamps: true, // Si vous souhaitez utiliser les champs createdAt et updatedAt
-      indexes: [
-        // Définissez vos index ici si nécessaire
-      ],
+        tableName: 'messages',
+        timestamps: true,
+        indexes: [],
     });
-  
-  
+
     return Message;
-  };
+};

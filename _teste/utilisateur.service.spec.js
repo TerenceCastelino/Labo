@@ -1,16 +1,13 @@
-const app = require('../app');    
-const db = require('../_models/db.model');  
-// Permet d'utiliser l'API Should de "Chai" - OBLIGATOIRE
-
+const app = require('../app');
+const db = require('../_models/db.model');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const utilisateurDTO = require('../_dto/utilisateur.dto');
+
 const should = chai.should();
-// Permet de lancer des requetes vers le server
 chai.use(chaiHttp);
 
-//Character de tests - fixtures
-const newUtilisateur =   {
+const newUtilisateur = {
     idUtilisateur: 1,
     nom: "Del Rio",
     prenom: "Olivia",
@@ -24,12 +21,13 @@ const newUtilisateur =   {
     gsm: "987-654-3210"
 }
 
-describe('Character Controller', () => {
+describe('Utilisateur Controller', () => {
     before(async () => {
-        await db.sequelize.sync({ force: true });        
-        await  db.Utilisateur.create(newUtilisateur);
-    })
-    it('get all utilisateur', (done) => {
+        await db.sequelize.sync({ force: true });
+        await db.Utilisateur.create(newUtilisateur);
+    });
+
+    it('getall utilisateur', (done) => {
         chai.request(app)
             .get('/api/utilisateur')
             .end((err, res) => {
@@ -39,26 +37,36 @@ describe('Character Controller', () => {
                 done();
             });
     });
-    it('get one utilisateur', (done) => {
+
+    it('getone utilisateur', (done) => {
         chai.request(app)
             .get('/api/utilisateur/1')
             .end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.be.a('object');  
-                let retour = new utilisateurDTO(res.body);  
+                res.body.should.be.a('object');
+                let retour = new utilisateurDTO(res.body);
                 chai.expect(retour.id).to.equal(newUtilisateur.id);
                 done();
             });
     });
-    it('deleted utilisateur',(done)=>{
-        chai.request(app)
-            .post('api/utilisateur/1')
-            .end((err, res) => {
-                res.should.have.status(204);  
-                chai.expect(retour.id).to.equal(newUtilisateur.id);
-                done();
 
-    })
-            })
-    
-})
+    it('delete utilisateur', (done) => {
+        chai.request(app)
+            .delete('/api/utilisateur/1')
+            .end((err, res) => {
+                res.should.have.status(204);
+                done();
+            });
+    });
+    // it('update Utilisateur',(done)=>{
+    //     chai.request(app)
+    //         .put('/api/utilisateur/1')
+    //         .end((err, res) => {
+    //             res.should.have.status(200);
+    //             res.body.should.be.a('object');
+    //             let retour = utilisateurDTO(res.body);
+    //             chai.expect(retour.id).to.equal(newUtilisateur.id);
+    //             done();
+    //         });
+    // })
+});

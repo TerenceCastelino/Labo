@@ -60,9 +60,9 @@ db.Contenu = require('./constenu.model')(sequelize)
 db.Message = require('./message.model')(sequelize)
 
 db.Utilisateur.hasMany(db.Contenu,{foreignKey:'idUtilisateur'})
-db.Contenu.belongsTo(db.Utilisateur)
+db.Contenu.belongsTo(db.Utilisateur,{foreignKey:'idUtilisateur'})
 
-db.Utilisateur.hasMany(db.Message,{foreignKey:'idUtilisateur'})
+// db.Utilisateur.hasMany(db.Message,{foreignKey:'idUtilisateur'})
 // Par exemple, si vous souhaitez associer les messages aux utilisateurs :
 db.Message.belongsTo(db.Utilisateur, { foreignKey: 'idDestinataire', as: 'Destinataire' });
 db.Message.belongsTo(db.Utilisateur, { foreignKey: 'idExpediteur', as: 'Expediteur' });
