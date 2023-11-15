@@ -35,6 +35,41 @@ const messageService = {
       }
     }
   },
+  deletedMessage: async (idExpediteur,idMessage)=>{
+    try{
+      const message = await db.Message.findOne({
+        where: {idExpediteur,idMessage}
+      })
+      if(!message){
+        throw new Error('le message n a pas ete trouver pour cet utilisateur')
+      }
+      await message.destroy()
+      return console.log('Message suprimer avec succes');
+
+    }catch(error){
+
+    }
+
+  },
+  getAllMessage: async (idGroup) => {
+    try {
+      if (!idGroup) {
+        throw new Error('ID du groupe manquant');
+      }
+
+      const messages = await db.Message.findAll({
+        where: {
+          idGroup,
+        },
+      });
+
+      return messages.map((msg) => new MessageDTO(msg));
+    } catch (error) {
+      console.error('Erreur lors de la récupération des messages :', error);
+      throw new Error('Échec de la récupération des messages');
+    }
+  },
+
 };
 
 // Fonction pour obtenir l'ID du groupe

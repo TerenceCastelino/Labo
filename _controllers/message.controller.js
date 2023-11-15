@@ -33,7 +33,40 @@ const messageController = {
   
         res.status(500).json({ error: 'Internal Server Error' });
       }
-    }
+    },
+    deleted:async (req,res)=>{
+      try{
+        const {idExpediteur,idMessage} =  req.params
+        const isDeleted = await messageService.deletedMessage(idExpediteur,idMessage)
+
+        if (isDeleted) {
+          res.sendStatus(204);
+          return;
+        }
+        res.sendStatus(404)
+
+      }catch(error){
+        console.error('Erreur lors de la suppression du message :', error);
+        res.status(400).json({ error: 'Erreur lors de la suppression' });
+
+      }
+    },
+    getAll: async (req, res) => {
+      try {
+        const { idgroup } = req.params; // Assurez-vous que le paramètre est correctement nommé
+  
+        if (!idgroup) {
+          return res.status(400).json({ error: 'ID du groupe manquant dans la requête' });
+        }
+  
+        const messages = await messageService.getAllMessage(idgroup);
+        res.status(200).json(messages);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des messages :', error);
+        res.status(500).json({ error: 'Erreur lors de la récupération des messages' });
+      }
+    },
+  
   };
   
   module.exports = messageController;
