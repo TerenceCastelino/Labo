@@ -55,7 +55,7 @@ const contenuService = {
             const contenu = await db.Contenu.findOne({
                 where: { idContenu, idUtilisateur },
             });
-
+            
 
             if (!contenu) {
                 throw new Error('Contenu non trouvé pour cet utilisateur');

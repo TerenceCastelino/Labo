@@ -4,7 +4,7 @@ const { Sequelize } = require('sequelize');
 // b. Récupération des variables d'environnement nécessaires à la connexion à la base de données
 const { NAME_LOGING, PASSWORD, NAME_DATABASE} = process.env;
 
-// Initilisation une nouvelle instance de l'object avec SQLite en paramètre
+// // Initilisation une nouvelle instance de l'object avec SQLite en paramètre
 
 if(process.env.NODE_ENV === 'test')
  {let sequelize;
@@ -24,16 +24,7 @@ db.Message = require('./message.model')(sequelize)
 
 module.exports = db;
 }
-
-
-
-
-
-
-
-
-
-
+// _______________Developement_____________________________________________________________
 
 // c. Crée une nouvelle instance de l'objet Sequelize pour se connecter à MSSQL
 if(process.env.NODE_ENV === 'development'){
@@ -54,21 +45,44 @@ const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-// Importe un modèle spécifique de la base de données à partir d'un fichier externe
+// Import des modèles spécifiques depuis des fichiers externes
 db.Utilisateur = require('./utilisateur.model')(sequelize);
-db.Contenu = require('./constenu.model')(sequelize)
-db.Message = require('./message.model')(sequelize)
+db.Contenu = require('./constenu.model')(sequelize);
+db.Groupe = require('./groupe.model')(sequelize);
+db.UserGroup = require('./userGroupe.model')(sequelize);
+db.Message = require('./message.model')(sequelize);
 
-db.Utilisateur.hasMany(db.Contenu,{foreignKey:'idUtilisateur'})
-db.Contenu.belongsTo(db.Utilisateur,{foreignKey:'idUtilisateur'})
+// Définition des associations entre les modèles
+db.Utilisateur.hasMany(db.Contenu, { foreignKey: 'idUtilisateur' });
+db.Contenu.belongsTo(db.Utilisateur, { foreignKey: 'idUtilisateur' });
 
-// db.Utilisateur.hasMany(db.Message,{foreignKey:'idUtilisateur'})
-// Par exemple, si vous souhaitez associer les messages aux utilisateurs :
-db.Message.belongsTo(db.Utilisateur, { foreignKey: 'idDestinataire', as: 'Destinataire' });
 db.Message.belongsTo(db.Utilisateur, { foreignKey: 'idExpediteur', as: 'Expediteur' });
+db.Message.belongsTo(db.UserGroup, { foreignKey: 'idConversation', as: 'Conversation' });
+
+db.Utilisateur.belongsToMany(db.Groupe, { through: db.UserGroup, foreignKey: 'idUtilisateur' });
+db.Groupe.belongsToMany(db.Utilisateur, { through: db.UserGroup, foreignKey: 'idGroupe' });
 
 module.exports = db;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

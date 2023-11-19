@@ -8,8 +8,9 @@ messageRouter.route('/:idgroup')
   });
 
 
-messageRouter.route('/:idExpediteur/:idDestinataire')
-  .post(messageController.addMessageUtilisateur)
+messageRouter.route('/:idExpediteur/:idConversation')
+  // .post(messageController.addMessageUtilisateur)
+  .post(messageController.addMessageGroupe)
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });
