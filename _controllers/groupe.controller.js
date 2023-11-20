@@ -1,7 +1,9 @@
 const groupeService = require('../_services/groupe.service');
 const groupeValidator = require('../_validators/groupe.validateur');
 
+
 const groupeController = {
+    //Crée un groupe
     addGroupe: async (req, res) => {
         try {
             const groupeData = req.body;
@@ -20,6 +22,7 @@ const groupeController = {
             return res.status(500).json({ error: 'Erreur lors de la création du groupe' });
         }
     },
+    //Ajouter des utilisateurs a un groupe
     addUserToGroup: async (req, res) => {
         try {
            
@@ -36,8 +39,22 @@ const groupeController = {
             return res.status(500).json({ error: "Erreur lors de l'ajout de l'utilisateur au groupe." });
         }
     },
-    getGroupMembers: async (req, res) => {
-        // Logique pour récupérer les membres d'un groupe
+    //Afficher tous les utilisateurs du groupe
+    getGroupMembers: async (req,res) => {
+        try{
+        const { idGroupe } = req.params;
+
+        
+        if (!idGroupe) {
+            return res.status(400).json({ error: 'ID du groupe manquant dans la requête' });
+          }
+        const userGroupe = await groupeService.getGroupMembers(idGroupe) 
+        res.status(200).json(userGroupe); 
+    } catch (error) {
+        console.error('Erreur lors de la récupération des utilisateur :', error);
+        res.status(500).json({ error: 'Erreur lors de la récupération des utilisateur' });
+      }
+
     },
 };
 

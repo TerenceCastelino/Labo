@@ -1,4 +1,1 @@
 penser une fonctionnalitée de mdp perdu
-penser une fonctionnalitée qui peux mettre une photo profil{
-    qui assure que sa soit des photo lier a l id et qui n est pas une video
-}

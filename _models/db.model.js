@@ -62,6 +62,8 @@ db.Message.belongsTo(db.UserGroup, { foreignKey: 'idConversation', as: 'Conversa
 db.Utilisateur.belongsToMany(db.Groupe, { through: db.UserGroup, foreignKey: 'idUtilisateur' });
 db.Groupe.belongsToMany(db.Utilisateur, { through: db.UserGroup, foreignKey: 'idGroupe' });
 
+
+
 module.exports = db;
 }
 
