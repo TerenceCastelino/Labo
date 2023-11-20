@@ -5,18 +5,18 @@ const { Op } = require('sequelize');
 
 const messageService = {
 
-  deletedMessage: async (idExpediteur,idMessage)=>{
-    try{
+  deletedMessage: async (idExpediteur, idMessage) => {
+    try {
       const message = await db.Message.findOne({
-        where: {idExpediteur,idMessage}
+        where: { idExpediteur, idMessage }
       })
-      if(!message){
+      if (!message) {
         throw new Error('le message n a pas ete trouver pour cet utilisateur')
       }
       await message.destroy()
       return console.log('Message suprimer avec succes');
 
-    }catch(error){
+    } catch (error) {
 
     }
 
@@ -39,24 +39,24 @@ const messageService = {
       throw new Error('Échec de la récupération des messages');
     }
   },
-  addToMessage:async (data,idExpediteur,idConversation) =>{
-    try{
+  addToMessage: async (data, idExpediteur, idConversation) => {
+    try {
       const groupId = await db.UserGroup.findOne({
-        where :{
-          idGroupe : idConversation,
-          idUtilisateur : idExpediteur
+        where: {
+          idGroupe: idConversation,
+          idUtilisateur: idExpediteur
         }
       })
       data.idExpediteur = idExpediteur
       data.idConversation = idConversation
       if (groupId) {
-        
-      
-      const message = await db.Message.create(data)
-      await message.validate()
-      return new MessageDTO(message)
-    }
-    }catch(err){
+
+
+        const message = await db.Message.create(data)
+        await message.validate()
+        return new MessageDTO(message)
+      }
+    } catch (err) {
       throw err
     }
   }

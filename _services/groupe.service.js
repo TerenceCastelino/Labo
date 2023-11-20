@@ -83,13 +83,76 @@ const groupeService = {
         }
     },
 
+    getAllGroupeUser: async (idUtilisateur) => {
+        try {
+            if (!idUtilisateur) {
+                throw new Error('ID de l utilisateur manquant');
+            }
+
+            const allGroupeUser = await db.sequelize.query(
+                `
+            SELECT g.nomGroupe , ug.idGroupe
+            FROM UserGroupes AS ug
+            INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
+            WHERE ug.idUtilisateur = :idUtilisateur
+            `,
+                {
+                    replacements: { idUtilisateur },
+                    type: db.sequelize.QueryTypes.SELECT,
+                }
+            );
+
+            return allGroupeUser;
+        } catch (error) {
+            console.error('Erreur lors de la récupération des groupes de l utilisateur :', error);
+            throw new Error('Échec de la récupération des groupes de l utilisateur');
+        }
+    },
+    exiteGroupe: async (idGroupe, idUtilisateur) => {
+        try {
+            const userGroupe = await db.UserGroup.findOne({
+                where: { idGroupe, idUtilisateur }
+            })
+
+            if (!userGroupe) {
+                throw new Error('l utilisateur n a pas ete trouver pour se groupe')
+            }
+
+            await userGroupe.destroy()
+            return console.log(('l utilisateur a quitter la conversation'));
+
+        } catch (err) {
+            throw err
+        }
+    },
+
+    updateGroupe: async (idCreateur, idGroupe, data) => {
+        try {
+            const groupe = await db.Groupe.findOne({
+                where: { idGroupe }
+            });
+
+            if (!groupe) {
+                throw new Error('Groupe non trouvé');
+            }
+
+            if (groupe.idCreateur !== idCreateur) {
+                throw new Error('Utilisateur non autorisé à mettre à jour ce groupe');
+            }
+
+            await groupe.update(data);
+            return new GroupeDTO(groupe);
+        } catch (error) {
+            throw error;
+        }
+    },
 
 
 
 
-    getAllGroupeUser: async () => {
 
-    }
+
+
 };
 module.exports = groupeService
 
