@@ -8,13 +8,22 @@ const express = require('express')
 require('express-async-errors');
 // 5.Crée une instance d'application Express
 const app = express();
+
+// ??? import cors
+const cors = require('cors');
+
+app.use(cors({
+    origin: 'http://localhost:4200', // Remplacez par votre URL front-end
+    optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+}));
+
 // 6.Active l'analyse des données JSON
 app.use(express.json());
 
 // 8.Importation du reste, y compris les routes
 const route = require('./_routes/base.route')
 // 9.Récupération des variables d'environnement depuis le fichier .env
-const {PORT,NODE_ENV} = process.env
+const { PORT, NODE_ENV } = process.env
 
 // 12.Vérifie la connexion à la base de données
 db.sequelize.authenticate()
@@ -22,11 +31,11 @@ db.sequelize.authenticate()
     .catch((error) => console.log(`Connection à la DB ratée : ${error}`));
 // Migration de la base de données (s'exécute uniquement en mode de développement)
 if (NODE_ENV === 'development') {
-    db.sequelize.sync({ alter: { drop: false}});
+    db.sequelize.sync({ alter: { drop: false } });
 };
 // 13.Crée le serveur web (API)
 // Ajoute le routage pour suivre le modèle RESTful en ajoutant '/api' comme route de base
-app.use('/api',route)
+app.use('/api', route)
 // 14.Met en écoute le serveur sur le port spécifié
 app.listen(PORT, () => {
     console.log(`Web server running on port ${PORT}`);
