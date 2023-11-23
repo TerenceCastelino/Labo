@@ -29,6 +29,10 @@ const groupeService = {
             throw new Error(`Erreur lors de la création du groupe : ${error.message}`);
         }
     },
+    addUserForEvent: async () => {
+        //ici on va gerer le faite ou l utilisateur puisse j ajouté
+
+    },
     addUserToGroup: async (idGroupe, idUtilisateur) => {
 
 

@@ -1,3 +1,53 @@
-lier les utilisateur a l id expediteur qui lui meme est lier idutilisateur de la table groupe
+je dois implementer une methode pour gere la perte de mots de passe
+via un requet du front a qui je renverrai un lien ou l utilisateur sera 
+automatiquement co et aura acces a une methode pour changer son mots de passe
+_______________________
+implementer plus tard des socket pour des message instantanée
+_______________________
+implementer une plateforme de payement
 
-deconnexion supprime token
+
+
+
+________GROUPE_____________________________
+permettre a un groupe d avoir une img profil
+
+___________Evenement_____________________
+la table evenement permet les rdv
+ou
+explique un evenement sur le temps
+cree un groupe avec l evenement afin de communiquer avec plusieur utilisateur participant a l evenement
+-------------------------------------------
+pouvoir lier plusieur image
+get one evenement
+get all evenement
+post un evenement
+deleted un evenement
+patch un evenement
+
+______________ANNONCE______________________
+la table annonce permet de vendre un produit ou un service
+dans le cas du produit elle devra etre lier a un id produit
+dans le cas d un service elle sera lier a evenement pour prendre un rdv
+(nessitera peut etre une table service avec le prix et l auteur du service )
+-----------------------------------------
+get one annonce
+get all annonce
+post annonce
+patch une annonce 
+deleted une annonce
+
+__________________Commentaire______________________________________
+la table commentaire sert a commenter un peux toute les table
+et y mettre des contenu diver
+
+on peux commenter une page d un utilisateur 
+on peux commenter une page d un groupe
+on peux commenter un contenu
+si un evenement est dans un groupe on pourra commenter sur se groupe dedié a un evenement
+on peux commenter une annonce
+on peux commenter un commentaire
+
+
+
+

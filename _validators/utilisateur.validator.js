@@ -7,7 +7,7 @@ const { object } = require('yup');
 
 // c. Définition du schéma de validation pour les utilisateurs en utilisant Yup
 const utilisateurValidator = object({
-    
+
     idUtilisateur: yup.number(),
     nom: yup.string().min(2).max(50).required(),
     prenom: yup.string().min(2).max(50).required(),
@@ -23,9 +23,9 @@ const utilisateurValidator = object({
     instagram: yup.string().url(),
     tictoc: yup.string().url(),
     twitter: yup.string().url(),
-    telephone: yup.string().min(9).max(13),
-    gsm: yup.string().min(10).max(14),
-   
+    telephone: yup.string().max(13),
+    gsm: yup.string().max(14),
+
 });
 
 // d. Exportation du schéma de validation "userValidator" pour être utilisé ailleurs dans l'application

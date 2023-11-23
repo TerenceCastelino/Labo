@@ -1,4 +1,4 @@
-const {Sequelize, DataTypes, ModelStatic } = require('sequelize');
+const { Sequelize, DataTypes, ModelStatic } = require('sequelize');
 const db = require('./db.model')
 
 /**
@@ -34,8 +34,8 @@ module.exports = (sequelize) => {
   });
 
 
-   
-  
+
+
 
   return Contenu;
 };
