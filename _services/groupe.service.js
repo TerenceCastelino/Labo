@@ -6,7 +6,37 @@ const groupeService = {
     addGroupe: async (data) => {
         try {
             // Création du groupe
+            data.genreGroupe = 'groupe'
             const groupe = await db.Groupe.create(data);
+
+
+            // Récupération de l'utilisateur (créateur) à partir de l'idCreateur du groupe
+            const createur = await db.Utilisateur.findByPk(groupe.idCreateur);
+
+            if (!createur) {
+                throw new Error("Utilisateur (créateur) non trouvé.");
+            }
+
+            // Création de l'entrée dans UsersGroupes liant le créateur au groupe
+            const newUserGroup = await db.UserGroup.create({
+                idGroupe: groupe.idGroupe,
+                idUtilisateur: createur.idUtilisateur
+            });
+
+            return {
+                groupe: new GroupeDTO(groupe),
+                newUserGroup: new UserGroupeDTO(newUserGroup)
+            };
+        } catch (error) {
+            throw new Error(`Erreur lors de la création du groupe : ${error.message}`);
+        }
+    },
+    addGroupeEvent: async (data) => {
+        try {
+            // Création du groupe
+            data.genreGroupe = 'event'
+            const groupe = await db.Groupe.create(data);
+
 
             // Récupération de l'utilisateur (créateur) à partir de l'idCreateur du groupe
             const createur = await db.Utilisateur.findByPk(groupe.idCreateur);
@@ -94,12 +124,35 @@ const groupeService = {
             }
 
             const allGroupeUser = await db.sequelize.query(
-                `
-            SELECT g.nomGroupe , ug.idGroupe
-            FROM UserGroupes AS ug
-            INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
-            WHERE ug.idUtilisateur = :idUtilisateur
-            `,
+                `SELECT g.nomGroupe, ug.idGroupe
+              FROM UserGroupes AS ug
+              INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
+              WHERE ug.idUtilisateur = :idUtilisateur
+              AND g.genreGroupe = 'groupe'`,
+                {
+                    replacements: { idUtilisateur },
+                    type: db.sequelize.QueryTypes.SELECT,
+                }
+            );
+
+            return allGroupeUser;
+        } catch (error) {
+            console.error('Erreur lors de la récupération des groupes de l utilisateur :', error);
+            throw new Error('Échec de la récupération des groupes de l utilisateur');
+        }
+    },
+    getAllGroupeEventUser: async (idUtilisateur) => {
+        try {
+            if (!idUtilisateur) {
+                throw new Error('ID de l utilisateur manquant');
+            }
+
+            const allGroupeUser = await db.sequelize.query(
+                `SELECT g.nomGroupe, ug.idGroupe
+              FROM UserGroupes AS ug
+              INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
+              WHERE ug.idUtilisateur = :idUtilisateur
+              AND g.genreGroupe = 'event'`,
                 {
                     replacements: { idUtilisateur },
                     type: db.sequelize.QueryTypes.SELECT,

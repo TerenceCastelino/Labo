@@ -23,7 +23,7 @@ const utilisateurValidator = object({
     instagram: yup.string().url(),
     tictoc: yup.string().url(),
     twitter: yup.string().url(),
-    telephone: yup.string().max(13),
+    telephone: yup.string(),
     gsm: yup.string().max(14),
 
 });

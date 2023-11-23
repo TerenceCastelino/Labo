@@ -17,37 +17,37 @@ const utilisateurController = {
       const utilisateur = await utilisateurService.oneUser(id); // Récupération des données utilisateur
       const passwordData = req.body;
       console.log(passwordData.motsDePasse);
-      console.log( utilisateur.motsDePasse);
-     
+      console.log(utilisateur.motsDePasse);
+
       // Validation des informations récupérées depuis les données utilisateur
       const validatedData = await mdpValidator.validate(passwordData);
 
       // Destructuration des données vérifiées
-      const { motsDePasse,idUtilisateur,emailUtilisateur } = validatedData;
+      const { motsDePasse, idUtilisateur, emailUtilisateur } = validatedData;
 
       if (idUtilisateur == id && utilisateur.emailUtilisateur == emailUtilisateur) {
         // Ré-hachage du mot de passe
-      const hashedPassword = bcrypt.hashSync(motsDePasse, 10);
+        const hashedPassword = bcrypt.hashSync(motsDePasse, 10);
 
-      // Mettre à jour les propriétés de l'utilisateur
-      utilisateur.motsDePasse = motsDePasse;
-      utilisateur.hashedPassword = hashedPassword;
+        // Mettre à jour les propriétés de l'utilisateur
+        utilisateur.motsDePasse = motsDePasse;
+        utilisateur.hashedPassword = hashedPassword;
 
-      // Mettre à jour l'utilisateur dans la base de données
-      const updatedUser = await utilisateurService.updateUser(id, utilisateur);
+        // Mettre à jour l'utilisateur dans la base de données
+        const updatedUser = await utilisateurService.updateUser(id, utilisateur);
 
-      
 
-      res.status(200).json(updatedUser);
 
-    
-      if (!updatedUser) {
-        res.sendStatus(404);
-        return;
-      }
-      }else{
+        res.status(200).json(updatedUser);
+
+
+        if (!updatedUser) {
+          res.sendStatus(404);
+          return;
+        }
+      } else {
         // console.error('Erreur lors de la mise à jour :', error);
-      res.status(400).json({ error: 'id incorrecte' });
+        res.status(400).json({ error: 'id incorrecte' });
       }
 
     } catch (error) {
@@ -76,7 +76,7 @@ const utilisateurController = {
       }
 
       const utilisateur = await utilisateurService.oneUser(id);
-      console.log(utilisateur.emailUtilisateur);
+
 
       if (!utilisateur) {
         res.sendStatus(404);
@@ -89,17 +89,17 @@ const utilisateurController = {
       res.status(500).json({ error: 'Erreur de service' });
     }
   },
-  
+
   update: async (req, res) => {
     try {
       const { id } = req.params;//parametre url
       const utilisateur = await utilisateurService.oneUser(id);
-      const mdpOrigine =utilisateur.motsDePasse
+      const mdpOrigine = utilisateur.motsDePasse
       const userData = req.body;//collecte du message json
       userData.motsDePasse = mdpOrigine //copie l ancien mdp afin de ne pas pouvoir le modif ici
       const validatedData = await utilisateurValidator.validate(userData);
       const updatedUser = await utilisateurService.updateUser(id, validatedData);
-      
+
       if (!updatedUser) {
         res.sendStatus(404);
         return;

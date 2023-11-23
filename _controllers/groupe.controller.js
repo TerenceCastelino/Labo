@@ -23,6 +23,25 @@ const groupeController = {
             return res.status(500).json({ error: 'Erreur lors de la création du groupe' });
         }
     },
+    //Crée un groupe
+    addGroupeEvent: async (req, res) => {
+        try {
+            const groupeData = req.body;
+
+            // Validation des données entrantes
+            const valideData = await groupeValidator.validate(groupeData, { abortEarly: false });
+
+            // Appel au service pour ajouter le groupe
+            const groupeInserted = await groupeService.addGroupeEvent(valideData);
+
+            if (groupeInserted) {
+                return res.status(201).json(groupeInserted);
+            }
+        } catch (error) {
+            console.error(`Erreur dans le contrôleur lors de l'ajout du groupe : ${error.message}`);
+            return res.status(500).json({ error: 'Erreur lors de la création du groupe' });
+        }
+    },
     //Ajouter des utilisateurs a un groupe
     addUserToGroup: async (req, res) => {
         try {
@@ -65,6 +84,21 @@ const groupeController = {
             }
 
             const groupeUser = await groupeService.getAllGroupeUser(idUtilisateur)
+            res.status(200).json(groupeUser)
+
+        } catch (error) {
+            console.error('Erreur lors de la récupération des utilisateur :', error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des utilisateur' });
+        }
+    },
+    getGroupeEventUser: async (req, res) => {
+        try {
+            const { idUtilisateur } = req.params;
+            if (!idUtilisateur) {
+                return res.status(400).json({ error: 'id utilisateur manquant' })
+            }
+
+            const groupeUser = await groupeService.getAllGroupeEventUser(idUtilisateur)
             res.status(200).json(groupeUser)
 
         } catch (error) {

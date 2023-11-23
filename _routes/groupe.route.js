@@ -6,6 +6,11 @@ groupeRouter.route('/')
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });
+groupeRouter.route('/event')
+  .post(groupeController.addGroupeEvent)
+  .all((req, res) => {
+    res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+  });
 
 groupeRouter.route('/groupe/:idGroupe')
   .get(groupeController.getGroupMembers)
@@ -15,6 +20,11 @@ groupeRouter.route('/groupe/:idGroupe')
 
 groupeRouter.route('/user/:idUtilisateur')
   .get(groupeController.getGroupeUser)
+  .all((req, res) => {
+    res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+  });
+groupeRouter.route('/userEvent/:idUtilisateur')
+  .get(groupeController.getGroupeEventUser)
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });

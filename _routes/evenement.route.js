@@ -2,6 +2,14 @@ const evenementRouter = require('express').Router()
 const evenementController = require('../_controllers/evenement.controller')
 
 
+evenementRouter.route('/:idGroupe')
+    .get(evenementController.getByIdEvent)
+    .all((req, res) => {
+        res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+    });
+
+
+
 evenementRouter.route('/:idCreateur/:idGroupe')
     .post(evenementController.addEvenementGroupe)
     .all((req, res) => {

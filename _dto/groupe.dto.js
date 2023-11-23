@@ -5,6 +5,7 @@ class GroupeDTO {
         this.description = data.description;
         this.idCreateur = data.idCreateur;
         this.photoProfilGroupe = data.photoProfilGroupe;
+        this.genreGroupe = data.genreGroupe
     }
 }
 

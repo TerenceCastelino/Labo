@@ -5,6 +5,24 @@ const { Op } = require('sequelize');
 
 const evenementService = {
     //get one evenement d un utilisateur
+    getOneEvent: async (idGroupe) => {
+        try {
+            if (!idGroupe) {
+                throw new Error('ID du groupe manquant');
+            }
+
+            const event = await db.Evenement.findOne({
+                where: {
+                    idGroupe,
+                }
+            })
+            return new EvenementDTO(event)
+
+
+        } catch (error) {
+
+        }
+    },
 
     // get all evenement 
 
@@ -21,6 +39,7 @@ const evenementService = {
             })
             data.idCreateur = idCreateur
             data.idGroupe = idGroupe
+
             if (groupId) {
 
 

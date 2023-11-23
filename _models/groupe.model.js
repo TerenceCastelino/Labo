@@ -1,4 +1,4 @@
-const {Sequelize, DataTypes, ModelStatic } = require('sequelize');
+const { Sequelize, DataTypes, ModelStatic } = require('sequelize');
 const db = require('./db.model')
 
 /**
@@ -11,7 +11,7 @@ const db = require('./db.model')
 
 
 module.exports = (sequelize) => {
-    const Groupe = sequelize.define('Groupe', {
+  const Groupe = sequelize.define('Groupe', {
     idGroupe: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -33,14 +33,18 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    
-  },
-  {
-    sequelize,
-    modelName: 'Groupe',
-    timestamps: true, // Active les horodatages createdAt et updatedAt
-  }
-);
+    genreGroupe: {
+      type: DataTypes.ENUM('groupe', 'event'),
+      allowNull: true,
+    }
 
-return Groupe;
+  },
+    {
+      sequelize,
+      modelName: 'Groupe',
+      timestamps: true, // Active les horodatages createdAt et updatedAt
+    }
+  );
+
+  return Groupe;
 }

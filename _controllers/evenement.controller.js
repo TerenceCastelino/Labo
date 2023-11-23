@@ -34,6 +34,29 @@ const evenementController = {
 
             res.status(500).json({ error: 'Internal Server Error' });
         }
+    },
+    getByIdEvent: async (req, res) => {
+        try {
+            const { idGroupe } = req.params
+            if (isNaN(idGroupe)) {
+                res.sendStatus(400)
+                return
+            }
+
+            const event = await evenementService.getOneEvent(idGroupe)
+
+            if (!event) {
+                res.sendStatus(404)
+                return
+            }
+
+            res.status(200).json(event)
+
+
+        } catch (error) {
+            console.error('erreur lors de la recuperation de l idgroupe de l event');
+            res.status(500).json({ error: 'Erreur de service' });
+        }
     }
 
 
