@@ -38,11 +38,11 @@ evenementRouter.route('/userEvent/:idUtilisateur')
 
 // affiche tous les membres d un event
 //////////////////////////////////////////////////=>
-evenementRouter.route('/event/:idGroupe')
-    .get(groupeController.getEventMembers)
-    .all((req, res) => {
-        res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
-    });
+// evenementRouter.route('/event/:idGroupe')
+//     .get(groupeController.getEventMembers)
+//     .all((req, res) => {
+//         res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+//     });
 
 
 module.exports = evenementRouter
