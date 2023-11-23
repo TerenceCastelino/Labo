@@ -92,8 +92,8 @@ const evenementService = {
     //
     //
     //
-
-    getEventMembers: async (idGroupe) => {
+    //Affiche tous les utilisateur d un Evenement OK
+    getALLMembersService: async (idGroupe) => {
         try {
             if (!idGroupe) {
                 throw new Error('ID du groupe manquant');
@@ -101,17 +101,19 @@ const evenementService = {
 
             const allUsersGroupe = await db.sequelize.query(
                 `
-            SELECT ug.idGroupe, u.nom, u.prenom 
-            FROM UserGroupes AS ug
-            INNER JOIN utilisateur AS u ON ug.idUtilisateur = u.idUtilisateur
-            WHERE ug.idGroupe = :idGroupe
-            AND g.genreGroupe = 'event'
-            `,
+                SELECT ug.idGroupe, u.nom, u.prenom 
+                FROM UserGroupes AS ug
+                INNER JOIN utilisateur AS u ON ug.idUtilisateur = u.idUtilisateur
+                INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
+                WHERE ug.idGroupe = :idGroupe
+                AND g.genreGroupe = 'event'
+                `,
                 {
                     replacements: { idGroupe }, // Paramètre pour idGroupe
                     type: db.sequelize.QueryTypes.SELECT,
                 }
             );
+
 
             return allUsersGroupe;
         } catch (error) {

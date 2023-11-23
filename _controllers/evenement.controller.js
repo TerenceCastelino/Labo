@@ -83,7 +83,8 @@ const evenementController = {
             return res.status(500).json({ error: 'Erreur lors de la création du groupe' });
         }
     },
-    getEventMembers: async (req, res) => {
+    //Affiche tous les utilisateur d un Evenement OK
+    getAllMembreS: async (req, res) => {
         try {
             const { idGroupe } = req.params;
 
@@ -91,7 +92,7 @@ const evenementController = {
             if (!idGroupe) {
                 return res.status(400).json({ error: 'ID du groupe manquant dans la requête' });
             }
-            const userGroupe = await groupeService.getGroupMembers(idGroupe)
+            const userGroupe = await evenementService.getALLMembersService(idGroupe)
             res.status(200).json(userGroupe);
         } catch (error) {
             console.error('Erreur lors de la récupération des utilisateur :', error);
