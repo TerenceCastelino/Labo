@@ -3,7 +3,9 @@ const UserGroupeDTO = require('../_dto/userGroupe.dto')
 const db = require('../_models/db.model');
 
 const groupeService = {
-    addGroupe: async (data) => {
+
+    // _____________EXCLUSIF___GROUPE__________________ 
+    addGroupeService: async (data) => {
         try {
             // Création du groupe
             data.genreGroupe = 'groupe'
@@ -31,66 +33,6 @@ const groupeService = {
             throw new Error(`Erreur lors de la création du groupe : ${error.message}`);
         }
     },
-    addGroupeEvent: async (data) => {
-        try {
-            // Création du groupe
-            data.genreGroupe = 'event'
-            const groupe = await db.Groupe.create(data);
-
-
-            // Récupération de l'utilisateur (créateur) à partir de l'idCreateur du groupe
-            const createur = await db.Utilisateur.findByPk(groupe.idCreateur);
-
-            if (!createur) {
-                throw new Error("Utilisateur (créateur) non trouvé.");
-            }
-
-            // Création de l'entrée dans UsersGroupes liant le créateur au groupe
-            const newUserGroup = await db.UserGroup.create({
-                idGroupe: groupe.idGroupe,
-                idUtilisateur: createur.idUtilisateur
-            });
-
-            return {
-                groupe: new GroupeDTO(groupe),
-                newUserGroup: new UserGroupeDTO(newUserGroup)
-            };
-        } catch (error) {
-            throw new Error(`Erreur lors de la création du groupe : ${error.message}`);
-        }
-    },
-    addUserForEvent: async () => {
-        //ici on va gerer le faite ou l utilisateur puisse j ajouté
-
-    },
-    addUserToGroup: async (idGroupe, idUtilisateur) => {
-
-
-        try {
-
-            const groupe = await db.Groupe.findByPk(idGroupe);
-
-            if (!groupe) {
-                throw new Error("Groupe non trouvé.");
-            }
-
-            const utilisateur = await db.Utilisateur.findByPk(idUtilisateur);
-
-            if (!utilisateur) {
-                throw new Error("Utilisateur non trouvé.");
-            }
-
-            const newUserGroup = await db.UserGroup.create({
-                idGroupe: groupe.idGroupe,
-                idUtilisateur: utilisateur.idUtilisateur
-            });
-
-            return new UserGroupeDTO(newUserGroup);
-        } catch (error) {
-            throw new Error(`Erreur lors de l'ajout de l'utilisateur au groupe : ${error.message}`);
-        }
-    },
-
     getGroupMembers: async (idGroupe) => {
         try {
             if (!idGroupe) {
@@ -99,11 +41,13 @@ const groupeService = {
 
             const allUsersGroupe = await db.sequelize.query(
                 `
-        SELECT ug.idGroupe, u.nom, u.prenom 
-        FROM UserGroupes AS ug
-        INNER JOIN utilisateur AS u ON ug.idUtilisateur = u.idUtilisateur
-        WHERE ug.idGroupe = :idGroupe
-        `,
+                SELECT ug.idGroupe, u.nom, u.prenom 
+                FROM UserGroupes AS ug
+                INNER JOIN utilisateur AS u ON ug.idUtilisateur = u.idUtilisateur
+                INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
+                WHERE ug.idGroupe = :idGroupe
+                AND g.genreGroupe = 'groupe'
+                `,
                 {
                     replacements: { idGroupe }, // Paramètre pour idGroupe
                     type: db.sequelize.QueryTypes.SELECT,
@@ -141,28 +85,37 @@ const groupeService = {
             throw new Error('Échec de la récupération des groupes de l utilisateur');
         }
     },
-    getAllGroupeEventUser: async (idUtilisateur) => {
+
+    addUserForEvent: async () => {
+        //ici on va gerer le faite ou l utilisateur puisse j ajouté
+
+    },
+    //___________Mixte___GROUPE_&_EVENEMENT__________________
+    addUserToGroup: async (idGroupe, idUtilisateur) => {
+
+
         try {
-            if (!idUtilisateur) {
-                throw new Error('ID de l utilisateur manquant');
+
+            const groupe = await db.Groupe.findByPk(idGroupe);
+
+            if (!groupe) {
+                throw new Error("Groupe non trouvé.");
             }
 
-            const allGroupeUser = await db.sequelize.query(
-                `SELECT g.nomGroupe, ug.idGroupe
-              FROM UserGroupes AS ug
-              INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
-              WHERE ug.idUtilisateur = :idUtilisateur
-              AND g.genreGroupe = 'event'`,
-                {
-                    replacements: { idUtilisateur },
-                    type: db.sequelize.QueryTypes.SELECT,
-                }
-            );
+            const utilisateur = await db.Utilisateur.findByPk(idUtilisateur);
 
-            return allGroupeUser;
+            if (!utilisateur) {
+                throw new Error("Utilisateur non trouvé.");
+            }
+
+            const newUserGroup = await db.UserGroup.create({
+                idGroupe: groupe.idGroupe,
+                idUtilisateur: utilisateur.idUtilisateur
+            });
+
+            return new UserGroupeDTO(newUserGroup);
         } catch (error) {
-            console.error('Erreur lors de la récupération des groupes de l utilisateur :', error);
-            throw new Error('Échec de la récupération des groupes de l utilisateur');
+            throw new Error(`Erreur lors de l'ajout de l'utilisateur au groupe : ${error.message}`);
         }
     },
     exiteGroupe: async (idGroupe, idUtilisateur) => {
@@ -204,8 +157,109 @@ const groupeService = {
         }
     },
 
+    // // _____________EXCLUSIF___EVENEMENT__________________ 
+    // addGroupeEvent: async (data) => {
+    //     try {
+    //         // Création du groupe
+    //         data.genreGroupe = 'event'
+    //         const groupe = await db.Groupe.create(data);
 
 
+    //         // Récupération de l'utilisateur (créateur) à partir de l'idCreateur du groupe
+    //         const createur = await db.Utilisateur.findByPk(groupe.idCreateur);
+
+    //         if (!createur) {
+    //             throw new Error("Utilisateur (créateur) non trouvé.");
+    //         }
+
+    //         // Création de l'entrée dans UsersGroupes liant le créateur au groupe
+    //         const newUserGroup = await db.UserGroup.create({
+    //             idGroupe: groupe.idGroupe,
+    //             idUtilisateur: createur.idUtilisateur
+    //         });
+
+    //         return {
+    //             groupe: new GroupeDTO(groupe),
+    //             newUserGroup: new UserGroupeDTO(newUserGroup)
+    //         };
+    //     } catch (error) {
+    //         throw new Error(`Erreur lors de la création du groupe : ${error.message}`);
+    //     }
+    // },
+    // getEventMembers: async (idGroupe) => {
+    //     try {
+    //         if (!idGroupe) {
+    //             throw new Error('ID du groupe manquant');
+    //         }
+
+    //         const allUsersGroupe = await db.sequelize.query(
+    //             `
+    //     SELECT ug.idGroupe, u.nom, u.prenom 
+    //     FROM UserGroupes AS ug
+    //     INNER JOIN utilisateur AS u ON ug.idUtilisateur = u.idUtilisateur
+    //     WHERE ug.idGroupe = :idGroupe
+    //     AND g.genreGroupe = 'event'
+    //     `,
+    //             {
+    //                 replacements: { idGroupe }, // Paramètre pour idGroupe
+    //                 type: db.sequelize.QueryTypes.SELECT,
+    //             }
+    //         );
+
+    //         return allUsersGroupe;
+    //     } catch (error) {
+    //         console.error('Erreur lors de la récupération des utilisateurs du groupe :', error);
+    //         throw new Error('Échec de la récupération des utilisateurs du groupe');
+    //     }
+    // },
+    // getAllGroupeEventUser: async (idUtilisateur) => {
+    //     try {
+    //         if (!idUtilisateur) {
+    //             throw new Error('ID de l utilisateur manquant');
+    //         }
+
+    //         const allGroupeUser = await db.sequelize.query(
+    //             `SELECT g.nomGroupe, ug.idGroupe
+    //           FROM UserGroupes AS ug
+    //           INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
+    //           WHERE ug.idUtilisateur = :idUtilisateur
+    //           AND g.genreGroupe = 'event'`,
+    //             {
+    //                 replacements: { idUtilisateur },
+    //                 type: db.sequelize.QueryTypes.SELECT,
+    //             }
+    //         );
+
+    //         return allGroupeUser;
+    //     } catch (error) {
+    //         console.error('Erreur lors de la récupération des groupes de l utilisateur :', error);
+    //         throw new Error('Échec de la récupération des groupes de l utilisateur');
+    //     }
+    // },
+    // getAllGroupeEventUser: async (idUtilisateur) => {
+    //     try {
+    //         if (!idUtilisateur) {
+    //             throw new Error('ID de l utilisateur manquant');
+    //         }
+
+    //         const allGroupeUser = await db.sequelize.query(
+    //             `SELECT g.nomGroupe, ug.idGroupe
+    //           FROM UserGroupes AS ug
+    //           INNER JOIN Groupes AS g ON ug.idGroupe = g.idGroupe
+    //           WHERE ug.idUtilisateur = :idUtilisateur
+    //           AND g.genreGroupe = 'event'`,
+    //             {
+    //                 replacements: { idUtilisateur },
+    //                 type: db.sequelize.QueryTypes.SELECT,
+    //             }
+    //         );
+
+    //         return allGroupeUser;
+    //     } catch (error) {
+    //         console.error('Erreur lors de la récupération des groupes de l utilisateur :', error);
+    //         throw new Error('Échec de la récupération des groupes de l utilisateur');
+    //     }
+    // },
 
 
 

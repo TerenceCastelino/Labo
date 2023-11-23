@@ -54,7 +54,8 @@ if (process.env.NODE_ENV === 'development') {
   db.Message = require('./message.model')(sequelize);
   db.Evenement = require('./evenement.model')(sequelize);
   db.Annonce = require('./annonces.model')(sequelize)
-  db.Commentaire = require('./commentaires.model')(sequelize)
+  // db.Commentaire = require('./commentaires.model')(sequelize)
+  //PROBLEME AVEC LA TABLE COMMENTAIRE
 
   // Définition des associations entre les modèles
   db.Utilisateur.hasMany(db.Contenu, { foreignKey: 'idUtilisateur' });
@@ -76,16 +77,16 @@ if (process.env.NODE_ENV === 'development') {
   db.Annonce.belongsTo(db.Utilisateur, { foreignKey: 'idAuteur', as: 'Auteur' });
   // db.Annonce.belongsTo(db.Produit, { foreignKey: 'idProduit', as: 'Produit' });
 
-  db.Commentaire.belongsTo(db.Utilisateur, { foreignKey: 'idAuteur' });
+  // db.Commentaire.belongsTo(db.Utilisateur, { foreignKey: 'idAuteur' });
 
-  db.Commentaire.belongsTo(db.Contenu, { foreignKey: 'idContenu' });
-  db.Contenu.hasMany(db.Commentaire, { foreignKey: 'idContenu' });//
+  // db.Commentaire.belongsTo(db.Contenu, { foreignKey: 'idContenu' });
+  // db.Contenu.hasMany(db.Commentaire, { foreignKey: 'idContenu' });//
 
-  db.Commentaire.belongsTo(db.Annonce, { foreignKey: 'idAnnonce' });
-  db.Annonce.hasMany(db.Commentaire, { foreignKey: 'idAnnonce' });
+  // db.Commentaire.belongsTo(db.Annonce, { foreignKey: 'idAnnonce' });
+  // db.Annonce.hasMany(db.Commentaire, { foreignKey: 'idAnnonce' });
 
-  db.Commentaire.belongsTo(db.Groupe, { foreignKey: 'idGroupe' });
-  db.Groupe.hasMany(db.Commentaire, { foreignKey: 'idGroupe' });
+  // db.Commentaire.belongsTo(db.Groupe, { foreignKey: 'idGroupe' });
+  // db.Groupe.hasMany(db.Commentaire, { foreignKey: 'idGroupe' });
 
   // db.Commentaire.belongsTo(db.Evenement, { foreignKey: 'idEvenement' });
   // db.Evenement.hasMany(db.Commentaire, { foreignKey: 'idEvenement' });

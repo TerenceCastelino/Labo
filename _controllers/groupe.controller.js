@@ -4,6 +4,7 @@ const groupeUpdateValidator = require('../_validators/groupeUpdate.validator')
 const contenuService = require('../_services/contenu.service')
 
 const groupeController = {
+    // _____________EXCLUSIF___GROUPE__________________ 
     //Crée un groupe
     addGroupe: async (req, res) => {
         try {
@@ -13,7 +14,7 @@ const groupeController = {
             const valideData = await groupeValidator.validate(groupeData, { abortEarly: false });
 
             // Appel au service pour ajouter le groupe
-            const groupeInserted = await groupeService.addGroupe(valideData);
+            const groupeInserted = await groupeService.addGroupeService(valideData);
 
             if (groupeInserted) {
                 return res.status(201).json(groupeInserted);
@@ -24,24 +25,7 @@ const groupeController = {
         }
     },
     //Crée un groupe
-    addGroupeEvent: async (req, res) => {
-        try {
-            const groupeData = req.body;
 
-            // Validation des données entrantes
-            const valideData = await groupeValidator.validate(groupeData, { abortEarly: false });
-
-            // Appel au service pour ajouter le groupe
-            const groupeInserted = await groupeService.addGroupeEvent(valideData);
-
-            if (groupeInserted) {
-                return res.status(201).json(groupeInserted);
-            }
-        } catch (error) {
-            console.error(`Erreur dans le contrôleur lors de l'ajout du groupe : ${error.message}`);
-            return res.status(500).json({ error: 'Erreur lors de la création du groupe' });
-        }
-    },
     //Ajouter des utilisateurs a un groupe
     addUserToGroup: async (req, res) => {
         try {
@@ -76,6 +60,22 @@ const groupeController = {
         }
 
     },
+    // getEventMembers: async (req, res) => {
+    //     try {
+    //         const { idGroupe } = req.params;
+
+
+    //         if (!idGroupe) {
+    //             return res.status(400).json({ error: 'ID du groupe manquant dans la requête' });
+    //         }
+    //         const userGroupe = await groupeService.getGroupMembers(idGroupe)
+    //         res.status(200).json(userGroupe);
+    //     } catch (error) {
+    //         console.error('Erreur lors de la récupération des utilisateur :', error);
+    //         res.status(500).json({ error: 'Erreur lors de la récupération des utilisateur' });
+    //     }
+
+    // },
     getGroupeUser: async (req, res) => {
         try {
             const { idUtilisateur } = req.params;
@@ -142,11 +142,6 @@ const groupeController = {
             res.status(400).json({ error: 'Erreur lors de la mise à jour du groupe' });
         }
     },
-
-
-
-
-
 
 };
 
