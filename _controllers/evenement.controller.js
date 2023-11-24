@@ -6,6 +6,7 @@ const groupeValidator = require('../_validators/groupe.validateur')
 
 const evenementController = {
     addEvenementGroupe: async (req, res) => {
+
         //probleme sa ne cree pas un groupe dans la table groupe en event
         try {
             const { idCreateur, idGroupe } = req.params;
@@ -38,6 +39,44 @@ const evenementController = {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     },
+    creationEvent: async (req, res) => {
+        //Cree un evenement OK
+
+        try {
+            const groupeData = req.body; // Récupération des données du groupe depuis la requête
+
+            // Validation des données entrantes
+            const valideData = await groupeValidator.validate(groupeData, { abortEarly: false });
+
+            // Appel au service pour ajouter le groupe
+            const groupeInserted = await evenementService.addEvent(valideData);
+
+            // Réponse HTTP avec le groupe inséré en cas de succès
+            if (groupeInserted) {
+                return res.status(201).json(groupeInserted);
+            }
+        } catch (error) {
+            console.error(`Erreur dans le contrôleur lors de l'ajout du groupe : ${error.message}`);
+            // Réponse HTTP avec une erreur en cas d'échec
+            return res.status(500).json({ error: 'Erreur lors de la création du groupe' });
+        }
+    },
+    getAllMembreS: async (req, res) => {
+        try {
+            const { idGroupe } = req.params;
+
+
+            if (!idGroupe) {
+                return res.status(400).json({ error: 'ID du groupe manquant dans la requête' });
+            }
+            const userGroupe = await evenementService.getALLMembersService(idGroupe)
+            res.status(200).json(userGroupe);
+        } catch (error) {
+            console.error('Erreur lors de la récupération des utilisateur :', error);
+            res.status(500).json({ error: 'Erreur lors de la récupération des utilisateur' });
+        }
+
+    },
     getByIdEvent: async (req, res) => {
         try {
             const { idGroupe } = req.params
@@ -61,50 +100,23 @@ const evenementController = {
             res.status(500).json({ error: 'Erreur de service' });
         }
     },
-    creationEvent: async (req, res) => {
-        //Cree un evenement OK
-
+    //??
+    getGroupeEventUser: async (req, res) => {
         try {
-            const groupeData = req.body; // Récupération des données du groupe depuis la requête
-
-            // Validation des données entrantes
-            const valideData = await groupeValidator.validate(groupeData, { abortEarly: false });
-
-            // Appel au service pour ajouter le groupe
-            const groupeInserted = await evenementService.addEvent(valideData);
-
-            // Réponse HTTP avec le groupe inséré en cas de succès
-            if (groupeInserted) {
-                return res.status(201).json(groupeInserted);
+            const { idUtilisateur } = req.params;
+            if (!idUtilisateur) {
+                return res.status(400).json({ error: 'id utilisateur manquant' })
             }
-        } catch (error) {
-            console.error(`Erreur dans le contrôleur lors de l'ajout du groupe : ${error.message}`);
-            // Réponse HTTP avec une erreur en cas d'échec
-            return res.status(500).json({ error: 'Erreur lors de la création du groupe' });
-        }
-    },
-    //Affiche tous les utilisateur d un Evenement OK
-    getAllMembreS: async (req, res) => {
-        try {
-            const { idGroupe } = req.params;
 
+            const groupeUser = await evenementService.getAllGroupeEventUser(idUtilisateur)
+            res.status(200).json(groupeUser)
 
-            if (!idGroupe) {
-                return res.status(400).json({ error: 'ID du groupe manquant dans la requête' });
-            }
-            const userGroupe = await evenementService.getALLMembersService(idGroupe)
-            res.status(200).json(userGroupe);
         } catch (error) {
             console.error('Erreur lors de la récupération des utilisateur :', error);
             res.status(500).json({ error: 'Erreur lors de la récupération des utilisateur' });
         }
-
     },
 
-
-
 };
-
-
 
 module.exports = evenementController
