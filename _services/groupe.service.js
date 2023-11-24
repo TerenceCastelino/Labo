@@ -156,6 +156,20 @@ const groupeService = {
             throw error;
         }
     },
+    // deletedGroupe: async (idGroupe, idCreateur) => {
+    //     try {
+    //         const groupe = await db.Groupe.findOne({
+    //             where: {
+    //                 idGroupe,
+    //                 idCreateur
+    //             }
+    //         })
+    //         await groupe.destroy()
+
+    //     } catch (error) {
+    //         console.error('deletedGroupeService');
+    //     }
+    // }
 
 };
 module.exports = groupeService

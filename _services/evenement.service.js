@@ -25,8 +25,7 @@ const evenementService = {
         } catch (error) {
 
         }
-    },
-  
+    }, 
     addToEvenent: async (data, idCreateur, idGroupe) => {
         try {
             const groupId = await db.UserGroup.findOne({
@@ -51,7 +50,6 @@ const evenementService = {
 
         }
     },
-
     addEvent: async (data) => {
         //Cree un groupe qui cree un userGroupe avec seulement le createur qui ensuite cree un evenement
 
@@ -85,10 +83,6 @@ const evenementService = {
             throw new Error(`Erreur lors de la création du groupe : ${error.message}`);
         }
     },
-
-   
-
-
     getALLMembersService: async (idGroupe) => {
         try {
             if (!idGroupe) {
@@ -117,6 +111,42 @@ const evenementService = {
             throw new Error('Échec de la récupération des utilisateurs du groupe');
         }
     },
+    // deleted un evenement
+    
+    deletedEvenement: async (idGroupe, idEvenement) => {
+        try {
+            // Vérifier si le groupe existe
+            const groupe = await db.Groupe.findOne({ where: { idGroupe } });
+            if (!groupe) {
+                throw new Error('Le groupe à supprimer n\'existe pas.');
+            }
+    
+            // Vérifier si l'événement existe
+            const event = await db.Evenement.findOne({ where: { idEvenement } });
+            if (!event) {
+                throw new Error('L\'événement à supprimer n\'existe pas.');
+            }
+    
+            // Vérifier si la relation userGroupe existe
+            const userGroupe = await db.UserGroup.findOne({ where: { idGroupe } });
+            if (!userGroupe) {
+                throw new Error('La relation user-groupe à supprimer n\'existe pas.');
+            }
+    
+            // Suppression dans l'ordre inverse pour respecter les contraintes de clés étrangères
+            await userGroupe.destroy();
+            await event.destroy();
+            await groupe.destroy();
+    
+            console.log('Suppression réussie.');
+    
+        } catch (error) {
+            console.error('Erreur lors de la suppression :', error.message);
+            throw new Error('Erreur lors de la suppression de l\'événement');
+        }
+    },
+    
+    
      //??________________________________________________Ok______________________________________
     getAllGroupeEventUser: async (idUtilisateur) => {
         try {
@@ -143,16 +173,16 @@ const evenementService = {
         }
     },
     
+
+    
     
 }
 module.exports = evenementService
 
-    // deleted un evenement
+    
 
     // patch un evenement qui appartien a l' idCreateur
     
     // get all evenement 
 
-    // get all evenement d un utilisateur
 
-    // post un evenement

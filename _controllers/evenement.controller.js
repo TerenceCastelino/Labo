@@ -1,44 +1,9 @@
 const evenementService = require('../_services/evenement.service')
-const evenementValidador = require('../_validators/evenement.validator')
-const groupeController = require('../_controllers/groupe.controller')
 const groupeValidator = require('../_validators/groupe.validateur')
 
 
 const evenementController = {
-    addEvenementGroupe: async (req, res) => {
 
-        //probleme sa ne cree pas un groupe dans la table groupe en event
-        try {
-            const { idCreateur, idGroupe } = req.params;
-            const dataEvenement = req.body;
-
-            // Ajoutez une vérification pour s'assurer que 'contenuMessage' est défini dans les données
-            if (!dataEvenement.description) {
-                return res.status(400).json({ error: 'description is required' });
-            }
-
-            const valideData = await evenementValidador.validate(dataEvenement);
-            valideData.idCreateur = idCreateur;
-            valideData.idGroupe = idGroupe;
-
-            const addEvent = await evenementService.addToEvenent(
-                valideData,
-                idCreateur,
-                idGroupe
-            )
-            res.status(200).json(addEvent);
-
-        } catch (error) {
-            console.error('controllerEvent - Error:', error);
-
-            // Si l'erreur provient de la validation Sequelize, renvoyez une réponse 400 Bad Request
-            if (error.name === 'SequelizeValidationError') {
-                return res.status(400).json({ error: error.message });
-            }
-
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    },
     creationEvent: async (req, res) => {
         //Cree un evenement OK
 
@@ -100,6 +65,23 @@ const evenementController = {
             res.status(500).json({ error: 'Erreur de service' });
         }
     },
+
+    deletedEvent: async (req, res) => {
+        console.log('Je suis à l\'entrée du contrôleur');
+        try {
+            console.log('Je suis dans le bloc try du contrôleur');
+            const { idGroupe, idEvenement } = req.params;
+            const deletedFull = await evenementService.deletedEvenement(idGroupe, idEvenement);
+
+            // Si la suppression s'est déroulée avec succès
+            res.status(200).json({ message: 'Événement supprimé avec succès.' });
+
+        } catch (error) {
+            console.error('Problème dans le contrôleur :', error.message);
+            res.status(500).json({ error: 'Erreur lors de la suppression de l\'événement.' });
+        }
+    },
+
     //??
     getGroupeEventUser: async (req, res) => {
         try {
