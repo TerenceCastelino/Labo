@@ -9,6 +9,8 @@ const db = require('./db.model')
  */
 
 
+
+
 module.exports = (sequelize) => {
     const Panier = sequelize.define('Panier', {
         idPanier: {
@@ -24,22 +26,11 @@ module.exports = (sequelize) => {
                 key: 'idUtilisateur',
             },
         },
-        idProduit: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'Produit',
-                key: 'idProduit',
-            },
-        },
         quantiteProduit: {
             type: DataTypes.INTEGER,
             allowNull: false,
         }
-
     });
-
-
 
     return Panier;
 };

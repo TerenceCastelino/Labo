@@ -81,6 +81,9 @@ if (process.env.NODE_ENV === 'development') {
   db.Annonce.belongsToMany(db.Contenu, { through: db.AnnonceContenu, foreignKey: 'idAnnonce' });
   db.Contenu.belongsToMany(db.Annonce, { through: db.AnnonceContenu, foreignKey: 'idContenu' });
 
+  db.Produit.belongsTo(db.Panier, { foreignKey: 'idPanier' })
+  db.Produit.belongsTo(db.Commande, { foreignKey: 'idCommande' })
+
   // Relations pour les Commandes et Paniers
   db.Panier.belongsTo(db.Utilisateur, { foreignKey: 'idUtilisateur' });
   db.Commande.belongsTo(db.Panier, { foreignKey: 'idPanier' });

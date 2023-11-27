@@ -8,6 +8,8 @@ const db = require('./db.model')
  * @returns {ModelStatic<any>}
  */
 
+
+
 module.exports = (sequelize) => {
     const Produit = sequelize.define('Produit', {
         idProduit: {
@@ -27,12 +29,9 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0,
-        },
-        idAnnonce: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
+        }
     });
 
-    return Produit
-}
+    return Produit;
+};
+

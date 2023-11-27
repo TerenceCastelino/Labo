@@ -7,6 +7,8 @@ const db = require('./db.model')
  * @param {Sequelize} sequelize
  * @returns {ModelStatic<any>}
  */
+
+
 module.exports = (sequelize) => {
     const Commande = sequelize.define('Commande', {
         idCommande: {
@@ -14,20 +16,20 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
+        idPanier: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Paniers',
+                key: 'idPanier',
+            },
+        },
         idUtilisateur: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'Utilisateur',
                 key: 'idUtilisateur',
-            },
-        },
-        idPanier: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'Panier',
-                key: 'idPanier',
             },
         },
         prixTotal: {
@@ -42,10 +44,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         }
-
     });
-
-
 
     return Commande;
 };
