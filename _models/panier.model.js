@@ -10,34 +10,36 @@ const db = require('./db.model')
 
 
 module.exports = (sequelize) => {
-    const Annonce = sequelize.define('Annonce', {
-        idAnnonce: {
+    const Panier = sequelize.define('Panier', {
+        idPanier: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull: false
         },
-        idAuteur: {
+        idUtilisateur: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'Utilisateur',
+                key: 'idUtilisateur',
+            },
         },
         idProduit: {
             type: DataTypes.INTEGER,
-            allowNull: true // Peut être nul
+            allowNull: false,
+            references: {
+                model: 'Produit',
+                key: 'idProduit',
+            },
         },
-        descriptionAnnonce: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        statuAnnonce: {
-            type: DataTypes.ENUM('disponible', 'rupture'),
-            allowNull: false
-        },
-        typeAnnonce: {
-            type: DataTypes.ENUM('produit', 'service'),
-            allowNull: false
+        quantiteProduit: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
         }
+
     });
 
-    return Annonce
-}
+
+
+    return Panier;
+};

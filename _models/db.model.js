@@ -1,20 +1,21 @@
-// a. Importation du module Sequelize pour gérer la base de données
+// _____________________________// Importation du module Sequelize pour gérer la base de données
 const { Sequelize } = require('sequelize');
 
-// b. Récupération des variables d'environnement nécessaires à la connexion à la base de données
+// Récupération des variables d'environnement nécessaires à la connexion à la base de données
 const { NAME_LOGING, PASSWORD, NAME_DATABASE } = process.env;
 
-// // Initilisation une nouvelle instance de l'object avec SQLite en paramètre
-
+// Initialisation d'une nouvelle instance de l'objet avec SQLite en paramètre
 if (process.env.NODE_ENV === 'test') {
   let sequelize;
-  sequelize = new Sequelize('sqlite::memory:', {// disable logging; default: console.log
+  sequelize = new Sequelize('sqlite::memory:', {
+    // disable logging; default: console.log
     logging: false
   });
-  // d. Crée l'objet "db" pour stocker les modèles de base de données
+
+  // Crée l'objet "db" pour stocker les modèles de base de données
   const db = {};
 
-  // e. Associe l'instance Sequelize à "sequelize" et le module Sequelize à "Sequelize" pour une utilisation ultérieure
+  // Associe l'instance Sequelize à "sequelize" et le module Sequelize à "Sequelize" pour une utilisation ultérieure
   db.sequelize = sequelize;
   db.Sequelize = Sequelize;
 
@@ -25,9 +26,10 @@ if (process.env.NODE_ENV === 'test') {
 
   module.exports = db;
 }
-// _______________Developement_____________________________________________________________
 
-// c. Crée une nouvelle instance de l'objet Sequelize pour se connecter à MSSQL
+// _______________Development_____________________________________________________________
+
+// Crée une nouvelle instance de l'objet Sequelize pour se connecter à MSSQL
 if (process.env.NODE_ENV === 'development') {
   const sequelize = new Sequelize(NAME_DATABASE, NAME_LOGING, PASSWORD, {
     host: 'localhost', // Spécifie l'adresse du serveur de base de données
@@ -39,10 +41,11 @@ if (process.env.NODE_ENV === 'development') {
       },
     },
   });
-  // d. Crée l'objet "db" pour stocker les modèles de base de données
+
+  // Crée l'objet "db" pour stocker les modèles de base de données
   const db = {};
 
-  // e. Associe l'instance Sequelize à "sequelize" et le module Sequelize à "Sequelize" pour une utilisation ultérieure
+  // Associe l'instance Sequelize à "sequelize" et le module Sequelize à "Sequelize" pour une utilisation ultérieure
   db.sequelize = sequelize;
   db.Sequelize = Sequelize;
 
@@ -54,8 +57,10 @@ if (process.env.NODE_ENV === 'development') {
   db.Message = require('./message.model')(sequelize);
   db.Evenement = require('./evenement.model')(sequelize);
   db.Annonce = require('./annonces.model')(sequelize)
-  // db.Commentaire = require('./commentaires.model')(sequelize)
-  //PROBLEME AVEC LA TABLE COMMENTAIRE
+  db.AnnonceContenu = require('./annonce&Contenus.model')(sequelize);
+  db.Produit = require('./produit.model')(sequelize);
+  db.Panier = require('./panier.model')(sequelize)
+  db.Commande = require('./commande.model')(sequelize)
 
   // Définition des associations entre les modèles
   db.Utilisateur.hasMany(db.Contenu, { foreignKey: 'idUtilisateur' });
@@ -73,45 +78,13 @@ if (process.env.NODE_ENV === 'development') {
   db.Groupe.hasMany(db.Evenement, { foreignKey: 'idGroupe', as: 'Evenements' });
   db.Evenement.belongsTo(db.Groupe, { foreignKey: 'idGroupe', as: 'Groupe' });
 
-  // Définition des associations avec les autres tables
-  db.Annonce.belongsTo(db.Utilisateur, { foreignKey: 'idAuteur', as: 'Auteur' });
-  // db.Annonce.belongsTo(db.Produit, { foreignKey: 'idProduit', as: 'Produit' });
+  db.Annonce.belongsToMany(db.Contenu, { through: db.AnnonceContenu, foreignKey: 'idAnnonce' });
+  db.Contenu.belongsToMany(db.Annonce, { through: db.AnnonceContenu, foreignKey: 'idContenu' });
 
-  // db.Commentaire.belongsTo(db.Utilisateur, { foreignKey: 'idAuteur' });
-
-  // db.Commentaire.belongsTo(db.Contenu, { foreignKey: 'idContenu' });
-  // db.Contenu.hasMany(db.Commentaire, { foreignKey: 'idContenu' });//
-
-  // db.Commentaire.belongsTo(db.Annonce, { foreignKey: 'idAnnonce' });
-  // db.Annonce.hasMany(db.Commentaire, { foreignKey: 'idAnnonce' });
-
-  // db.Commentaire.belongsTo(db.Groupe, { foreignKey: 'idGroupe' });
-  // db.Groupe.hasMany(db.Commentaire, { foreignKey: 'idGroupe' });
-
-  // db.Commentaire.belongsTo(db.Evenement, { foreignKey: 'idEvenement' });
-  // db.Evenement.hasMany(db.Commentaire, { foreignKey: 'idEvenement' });
+  // Relations pour les Commandes et Paniers
+  db.Panier.belongsTo(db.Utilisateur, { foreignKey: 'idUtilisateur' });
+  db.Commande.belongsTo(db.Panier, { foreignKey: 'idPanier' });
+  db.Commande.belongsTo(db.Utilisateur, { foreignKey: 'idUtilisateur' });
 
   module.exports = db;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
