@@ -1,5 +1,6 @@
 const evenementService = require('../_services/evenement.service')
 const groupeValidator = require('../_validators/groupe.validateur')
+const eventValidator = require('../_validators/evenement.validator')
 
 
 const evenementController = {
@@ -83,6 +84,54 @@ const evenementController = {
     },
 
     //??
+    // patchEvent: async (req, res) => {
+    //     try {
+    //         const { idGroupe, idCreateur } = req.params
+    //         // const event = await evenementService.getOneEvent(idGroupe)
+    //         const eventData = req.body
+    //         const validateData = await eventValidator.validate(eventData)
+    //         const updateEvent = await evenementService.patchEvent(idGroupe, idCreateur, validateData)
+
+    //         if (!updateEvent) {
+    //             res.sendStatus(404)
+    //             return
+    //         }
+    //         res.status(200).json(updateEvent)
+    //     } catch (error) {
+    //         console.error('Erreur lors de la mise à jour de l evenement :', error);
+    //         res.status(400).json({ error: 'Erreur lors de la mise à jour' });
+    //     }
+
+    // },
+    // Contrôleur pour gérer la mise à jour d'un événement
+    patchEvent: async (req, res) => {
+        try {
+            // Extraction des paramètres de la requête
+            const { idEvenement, idCreateur } = req.params;
+
+            // Données à mettre à jour pour l'événement
+            const eventData = req.body;
+
+            // Validation des données de l'événement
+            const validatedEventData = await eventValidator.validate(eventData);
+
+            // Appel au service pour mettre à jour l'événement
+            const updatedEvent = await evenementService.patchEvent(idEvenement, idCreateur, validatedEventData);
+
+            // Vérification si l'événement a été mis à jour avec succès
+            if (!updatedEvent) {
+                res.status(404).json({ error: 'Événement non trouvé' });
+                return;
+            }
+
+            // Renvoi de l'événement mis à jour en réponse
+            res.status(200).json(updatedEvent);
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour de l\'événement :', error);
+            res.status(400).json({ error: 'Erreur lors de la mise à jour de l\'événement' });
+        }
+    },
+
     getGroupeEventUser: async (req, res) => {
         try {
             const { idUtilisateur } = req.params;

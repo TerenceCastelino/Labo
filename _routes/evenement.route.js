@@ -1,9 +1,8 @@
 const evenementRouter = require('express').Router()
-const groupeController = require('../_controllers/groupe.controller')
 const evenementController = require('../_controllers/evenement.controller')
 
 
-//??________________________________________________Ok______________________________________
+
 // localhost:3000/api/evenement
 //Cree un groupe qui cree un usergroupe qui cree un evenement  OK
 
@@ -39,23 +38,19 @@ evenementRouter.route('/:idGroupe')
     .all((req, res) => {
         res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
     });
-
+//Suprimer un evenement
 evenementRouter.route('/deleted/:idGroupe/:idEvenement')
     .delete(evenementController.deletedEvent)
     .all((req, res) => {
         res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
     });
 
-//??________________________________________________Ok______________________________________
-
-// localhost:3000/api/evenement/idCreateur/idGroupe 
-// cree un event a partir d un groupeEvent
-
-// evenementRouter.route('/:idCreateur/:idGroupe')
-//     .post(evenementController.addEvenementGroupe) //ICI la methode a assigner a un groupe d eventoooooooooooooooooooooooooooooooooooooooooooo
-//     .all((_req, res) => {
-//         res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
-//     });
+//patch afin de modifier une heure de debut ou de fin ou son status
+evenementRouter.route('/patch/idEvenement/:idEvenement/idCreateur/:idCreateur')
+    .patch(evenementController.patchEvent)
+    .all((req, res) => {
+        res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+    });
 
 
 module.exports = evenementRouter

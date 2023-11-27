@@ -148,6 +148,97 @@ const evenementService = {
     
     
      //??________________________________________________Ok______________________________________
+    //  patchEvent:async (idGroupe,idCreateur,data)=>{
+    //     try{
+    //         const event = await db.Evenement.findOne({
+    //             where:{ idGroupe,idCreateur }
+    //         })
+    //         await event.update(data)
+
+    //         return new EvenementDTO(event)
+
+    //     }catch(error){
+    //         console.error('probleme dans le service evenement pour la methode patchEvent');
+    //     }
+
+    //  },
+    // Service pour mettre à jour un événement
+// patchEvent: async (idGroupe, idCreateur, data) => {
+//     try {
+//         // Recherche de l'événement à mettre à jour
+//         const event = await db.Evenement.findOne({
+//             where: { idGroupe, idCreateur }
+//         });
+
+//         // Vérification si l'événement existe
+//         if (!event) {
+//             throw new Error('Événement non trouvé');
+//         }
+
+//         // Mise à jour de l'événement avec les nouvelles données
+//         await event.update(data);
+
+//         // Renvoie un objet représentant l'événement mis à jour
+//         return new EvenementDTO(event);
+//     } catch (error) {
+//         console.error('Problème dans le service lors de la mise à jour de l\'événement :', error);
+//         throw new Error('Échec de la mise à jour de l\'événement');
+//     }
+// },
+// patchEvent: async (idGroupe, idCreateur, data) => {
+//     try {
+//         // Recherche de l'événement à mettre à jour
+//         const event = await db.Evenement.findOne({
+//             where: { idGroupe, idCreateur }
+//         });
+
+//         // Vérification si l'événement existe
+//         if (!event) {
+//             throw new Error('Événement non trouvé');
+//         }
+
+//         // Vérification des données à mettre à jour
+//         const { dateDebut, dateFin } = data;
+//         if (!dateDebut || !dateFin) {
+//             throw new Error('Les champs dateDebut et dateFin sont obligatoires');
+//         }
+
+//         // Mise à jour de l'événement avec les nouvelles données
+//         const updatedEvent = await event.update(data);
+
+//         // Renvoie un objet représentant l'événement mis à jour
+//         return new EvenementDTO(updatedEvent);
+//     } catch (error) {
+//         console.error('Problème dans le service lors de la mise à jour de l\'événement :', error);
+//         throw new Error('Échec de la mise à jour de l\'événement');
+//     }
+// },
+patchEvent: async (idEvenement, idCreateur, data) => {
+    try {
+        console.log('Paramètres utilisés pour la recherche :', idEvenement, idCreateur);
+
+        // Recherche de l'événement à mettre à jour
+        const event = await db.Evenement.findOne({
+            where: { idEvenement }
+        });
+
+        if (!event) {
+            throw new Error('Événement non trouvé');
+        }
+
+        // Mise à jour de l'événement avec les nouvelles données
+        await event.update(data);
+
+        // Renvoie un objet représentant l'événement mis à jour
+        return new EvenementDTO(event);
+    } catch (error) {
+        console.error('Problème dans le service lors de la mise à jour de l\'événement :', error);
+        throw new Error('Échec de la mise à jour de l\'événement');
+    }
+},
+
+
+
     getAllGroupeEventUser: async (idUtilisateur) => {
         try {
             if (!idUtilisateur) {

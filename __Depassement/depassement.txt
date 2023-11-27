@@ -19,11 +19,8 @@ explique un evenement sur le temps
 cree un groupe avec l evenement afin de communiquer avec plusieur utilisateur participant a l evenement
 -------------------------------------------
 pouvoir lier plusieur image
-get one evenement
-get all evenement
-post un evenement
-deleted un evenement
-patch un evenement
+regler le probleme de prise de rdv peux pas etre date inferieure
+
 
 ______________ANNONCE______________________
 la table annonce permet de vendre un produit ou un service
