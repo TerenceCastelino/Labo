@@ -9,14 +9,16 @@ const db = require('./db.model')
  */
 
 
-
-
 module.exports = (sequelize) => {
-    const Panier = sequelize.define('Panier', {
+    const detailPanier = sequelize.define('detailPanier', {
         idPanier: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            references: {
+                model: 'Paniers', // Référence au modèle Groupe
+                key: 'idPanier', // Clé primaire dans le modèle Groupe
+            },
+
         },
         idUtilisateur: {
             type: DataTypes.INTEGER,
@@ -26,11 +28,11 @@ module.exports = (sequelize) => {
                 key: 'idUtilisateur',
             },
         },
-        // quantiteProduit: {
-        //     type: DataTypes.INTEGER,
-        //     allowNull: false,
-        // }
+        quantiteProduit: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        }
     });
 
-    return Panier;
+    return detailPanier;
 };

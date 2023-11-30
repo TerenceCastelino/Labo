@@ -1,4 +1,4 @@
-const {Sequelize, DataTypes, ModelStatic } = require('sequelize');
+const { Sequelize, DataTypes, ModelStatic } = require('sequelize');
 const db = require('./db.model')
 
 /**
@@ -16,10 +16,7 @@ module.exports = (sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        // idDestinataire: {
-        //     type: DataTypes.INTEGER,
-        //     allowNull: false,
-        // },
+
         idExpediteur: {
             type: DataTypes.INTEGER,
             allowNull: false,

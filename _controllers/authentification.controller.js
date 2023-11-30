@@ -120,6 +120,7 @@ const authentificationController = {
       // Stocker le token (jwt) dans la DB
       const clientJwt = await authentificationService.addJwt(token, user.idUtilisateur);
 
+
       if (clientJwt) {
         // Si l'insertion s'est correctement déroulée, on envoi les informations dans le header et au front en json
         res.setHeader('Authorization', `Bearer ${token}`);
@@ -134,3 +135,8 @@ const authentificationController = {
 }
 
 module.exports = authentificationController
+
+// ______________________________________
+
+
+

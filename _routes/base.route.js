@@ -7,6 +7,7 @@ const contenuRoute = require('./contenu.route')
 const messageRoute = require('./message.route')
 const groupeRoute = require('./groupe.route')
 const evenementRoute = require('./evenement.route')
+const produitRoute = require('./produit.route')
 
 // 3. Utilisation du routeur pour gérer les routes specifique '/???'
 router.use('/utilisateur', utilisateurRoute);
@@ -15,6 +16,7 @@ router.use('/contenu', contenuRoute)
 router.use('/message', messageRoute)
 router.use('/groupe', groupeRoute)
 router.use('/evenement', evenementRoute)
+router.use('/produit', produitRoute)
 
 // 4. Exportation du routeur
 module.exports = router
