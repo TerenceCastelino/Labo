@@ -70,6 +70,41 @@ const produitController = {
             console.error('Erreur lors de la mise à jour du produit :', err);
             res.status(400).json({ err: 'Erreur lors de la mise à jour' });
         }
+    },
+    getAll: async (req, res) => {
+        try {
+            const produit = await produitService.getAllProduit()
+            res.status(200).json(produit)
+
+        } catch (error) {
+            console.error('Erreur lors de la récupération des produits :', error);
+            res.status(500).json({ error: 'Erreur de service' });
+
+        }
+
+    },
+    getOne: async (req, res) => {
+        try {
+            const { idProduit } = req.params
+            if (isNaN(idProduit)) {
+                res.sendStatus(400)
+                return
+            }
+
+            const produit = await produitService.getOneProduit(idProduit)
+
+            if (!produit) {
+                res.sendStatus(404)
+                return
+            }
+
+            res.status(200).json(produit)
+
+        } catch (err) {
+            console.error('Erreur lors de la récupération d\'un produit par ID :', err);
+            res.status(500).json({ err: 'Erreur de service' });
+
+        }
     }
 
 }

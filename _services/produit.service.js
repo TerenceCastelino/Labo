@@ -69,13 +69,17 @@ const produitService = {
     },
     updateQty: async (idUtilisateur, idProduit, qty) => {
         try {
-
+            //A implementer!!!
         } catch (err) {
             throw err
         }
     },
     getOneProduit: async (idProduit) => {
         try {
+            const produit = await db.Produit.findOne({
+                where: { idProduit }
+            })
+            return new ProduitDTO(produit)
 
         } catch (err) {
 
@@ -83,6 +87,9 @@ const produitService = {
     },
     getAllProduit: async () => {
         try {
+            const produits = await db.Produit.findAll()
+            return produits.map(produit => new ProduitDTO(produit))
+
 
         } catch (err) {
 

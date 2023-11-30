@@ -1,6 +1,19 @@
 const produitControlleur = require('../_controllers/produit.controller')
 const produitRouter = require('express').Router()
 
+
+produitRouter.route('/')
+    .get(produitControlleur.getAll)
+    .all((_req, res) => {
+        res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+    });
+
+produitRouter.route('/oneProduit/:idProduit')
+    .get(produitControlleur.getOne)
+    .all((_req, res) => {
+        res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
+    });
+
 produitRouter.route('/:idUtilisateur')
     .post(produitControlleur.addProduit)
     .all((_req, res) => {
