@@ -82,34 +82,15 @@ if (process.env.NODE_ENV === 'development') {
   db.Annonce.belongsToMany(db.Contenu, { through: db.AnnonceContenu, foreignKey: 'idAnnonce' });
   db.Contenu.belongsToMany(db.Annonce, { through: db.AnnonceContenu, foreignKey: 'idContenu' });
 
-  // db.Produit.belongsTo(db.Panier, { foreignKey: 'idPanier' })
-  // db.Produit.belongsTo(db.Commande, { foreignKey: 'idCommande' })
+
 
   // Relations pour les Commandes et Paniers
+  db.Utilisateur.hasMany(db.Panier, { foreignKey: 'idUtilisateur' })
   db.Panier.belongsTo(db.Utilisateur, { foreignKey: 'idUtilisateur' });
-  db.Panier.belongsTo(db.Produit, { foreignKey: 'idProduit' });
+  db.Panier.belongsToMany(db.Produit, { through: db.DetailPanier, foreignKey: 'idPanier' })
+  db.Produit.belongsToMany(db.Panier, { through: db.DetailPanier, foreignKey: 'idProduit' })
   db.Commande.belongsTo(db.Panier, { foreignKey: 'idPanier' });
   db.Commande.belongsTo(db.Utilisateur, { foreignKey: 'idUtilisateur' });
-
-  // ... (définitions précédentes des modèles)
-
-  // Relation entre Utilisateur et Panier
-  // db.Utilisateur.hasOne(db.Panier); // Un Utilisateur a un Panier
-  // db.Panier.belongsTo(db.Utilisateur); // Un Panier appartient à un Utilisateur
-
-  // // Relation entre Panier et Détail de Panier
-  // db.Panier.hasMany(db.DetailPanier); // Un Panier a plusieurs Détails de Panier
-  // db.DetailPanier.belongsTo(db.Panier); // Un Détail de Panier appartient à un Panier
-
-  // // Relation entre Détail de Panier et Produit
-  // db.DetailPanier.belongsTo(db.Produit); // Un Détail de Panier est associé à un Produit
-  // db.Produit.hasMany(db.DetailPanier); // Un Produit peut être dans plusieurs Détails de Panier
-
-  // // Relation entre Panier et Commande
-  // db.Panier.hasOne(db.Commande); // Un Panier a une Commande
-  // db.Commande.belongsTo(db.Panier); // Une Commande est créée à partir d'un Panier
-
-  // ... (autres relations et définitions)
 
 
 

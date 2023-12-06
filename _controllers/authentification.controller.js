@@ -89,7 +89,7 @@ const authentificationController = {
         if (tokenValid) {
           // Le token (jwt) est valide, envoi de l'information dans le header de la requête
           res.setHeader('Authorization', `Bearer ${existingToken.jwt}`);
-          return res.status(200).json({ token: existingToken.jwt });
+          return res.status(200).json({ token: existingToken.jwt, idUtilisateur: user.idUtilisateur });
         }
       }
 
@@ -136,7 +136,4 @@ const authentificationController = {
 
 module.exports = authentificationController
 
-// ______________________________________
-
-
-
+// _____________________________________
