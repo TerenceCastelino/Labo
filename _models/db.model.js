@@ -62,6 +62,8 @@ if (process.env.NODE_ENV === 'development') {
   db.Panier = require('./panier.model')(sequelize)
   db.Commande = require('./commande.model')(sequelize)
   db.DetailPanier = require('./detailPanier.model')(sequelize)
+  db.MessageInstantane = require('./messagerieInstantanee.model')(sequelize)
+  db.Conversation = require('./conversation.model')(sequelize)
 
   // Définition des associations entre les modèles
   db.Utilisateur.hasMany(db.Contenu, { foreignKey: 'idUtilisateur' });
@@ -81,6 +83,10 @@ if (process.env.NODE_ENV === 'development') {
 
   db.Annonce.belongsToMany(db.Contenu, { through: db.AnnonceContenu, foreignKey: 'idAnnonce' });
   db.Contenu.belongsToMany(db.Annonce, { through: db.AnnonceContenu, foreignKey: 'idContenu' });
+
+  db.Conversation.belongsTo(db.MessageInstantane, { foreignKey: 'idConversation', as: 'MessageInstantane' }); // Clé étrangère dans la table Conversation
+
+
 
 
 

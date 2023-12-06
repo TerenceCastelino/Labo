@@ -8,6 +8,7 @@ const express = require('express')
 require('express-async-errors');
 // 5.Crée une instance d'application Express
 const app = express();
+//tentative avec websocket
 
 // ??? import cors
 const cors = require('cors');

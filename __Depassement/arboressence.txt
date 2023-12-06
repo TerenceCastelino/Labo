@@ -10,6 +10,7 @@ labo
 ├── _uploads
 ├── .env
 ├── .gitignore
-├── app.js
+├── app.js (votre application principale)
 ├── package.json
-└── package-lock.json
+├── package-lock.json
+└── websocketServer.js (votre serveur WebSocket)

@@ -11,11 +11,10 @@ const authentificationService = {
         });
         return new UtilisateurDTO(user);
     },
-    
-    
+
+
     // Associe un jeton JWT à un utilisateur
     addJwt: async (jwt, id) => {
-        console.log('idddddddddd : ', id);
         // Vérification de l'existence de l'utilisateur
         const userFound = await db.Utilisateur.findOne({
             where: { idUtilisateur: id }
@@ -24,7 +23,7 @@ const authentificationService = {
         await userFound.update({ jwt });
         return userFound;
     },
-    
+
     // Récupère le jeton JWT d'un utilisateur par son ID
     getJwt: async (id) => {
         const jwtExist = await db.Utilisateur.findOne({
@@ -32,7 +31,7 @@ const authentificationService = {
         });
         return jwtExist;
     },
-    
+
     // Vérifie la validité d'un jeton JWT
     verifyJwt: async (token) => {
         const secret = process.env.JWT_SECRET;
