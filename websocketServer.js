@@ -1,9 +1,13 @@
+// 1.Importation et configuration de dotenv
+require('dotenv').config()
+
+
 const http = require('http');
 const socketIO = require('socket.io');
 const db = require("./_models/db.model");
-//cree un dotenv
 const server = http.createServer();
 const io = socketIO(server);
+
 
 io.on('connection', (socket) => {
     console.log('Nouvelle connexion WebSocket');
@@ -16,16 +20,10 @@ io.on('connection', (socket) => {
         console.log('Déconnexion WebSocket');
     });
 });
-const webSocketRoute = require('./_routes/webSocket.route')
-db.sequelize.authenticate()
-    .then(() => console.log('Connection à la DB réussie'))
-    .catch((error) => console.log(`Connection à la DB ratée : ${error}`));
-// Migration de la base de données (s'exécute uniquement en mode de développement)
-if (NODE_ENV === 'development') {
-    db.sequelize.sync({ alter: { drop: false } });
-};
 
-app.use('/websocket', webSocketRoute)
+
+
+
 
 const PORT = process.env.WEBSOCKET_PORT || 3001;
 server.listen(PORT, () => {
