@@ -10,6 +10,8 @@ const evenementRoute = require('./evenement.route')
 const produitRoute = require('./produit.route')
 const panierRoute = require('./panier.route')
 
+const socketRoute = require('./socket.route')
+
 // 3. Utilisation du routeur pour gérer les routes specifique '/???'
 router.use('/utilisateur', utilisateurRoute);
 router.use('/authentification', authentificationRoute)
@@ -19,6 +21,8 @@ router.use('/groupe', groupeRoute)
 router.use('/evenement', evenementRoute)
 router.use('/produit', produitRoute)
 router.use('/panier', panierRoute)
+
+router.use('/socket', socketRoute)
 
 // 4. Exportation du routeur
 module.exports = router

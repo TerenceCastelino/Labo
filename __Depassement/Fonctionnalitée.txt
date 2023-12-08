@@ -1,5 +1,40 @@
-penser une fonctionnalitée de mdp perdu
+_________________         // Création du service pour gérer les connexions WebSocket
+| Service         |        // Initialisation des connexions WebSocket et des fonctionnalités associées
+|                 |        // Cette section gère la logique de connexion et les événements WebSocket
+|                 |
+|_________________|
 
+         |
+         |         // Exportation du service pour être utilisé dans d'autres parties de l'application
+         |         // comme le contrôleur et la route
 
-la nous sommes dans le dossier routes
-fichier:
+         |
+         V
+
+_________________         // Contrôleur pour gérer les événements WebSocket
+| Controller      |        // Gestion des actions à effectuer en réponse à des événements WebSocket spécifiques
+|                 |        // Inclut la logique pour interagir avec le service WebSocket
+|                 |
+|_________________|
+
+         |
+         |         // Exportation du contrôleur pour être utilisé dans la route
+         |
+         V
+
+_________________         // Route pour gérer les événements WebSocket
+| Route           |        // Mappage des événements WebSocket aux fonctions du contrôleur
+|                 |        // Gestion des appels WebSocket entrants
+|                 |
+|_________________|
+
+         |
+         |         // Intégration de la route dans l'application principale
+         |
+         V
+
+_________________         // App principale (app.js)
+| App             |        // Initialisation de l'application, du serveur, et des dépendances
+|                 |        // Gestion de la logique principale de l'application
+|                 |
+|_________________|
