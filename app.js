@@ -7,11 +7,16 @@ const server = require('http').createServer(app); // Création d'un serveur HTTP
 const socketIo = require('./socket.io')           // Importation du module socket.io
 socketIo(server)
 const path = require('path');
-// Utilisation de socket.io avec le serveur HTTP créé
 
-//_Configue_______________________
+//Import_____Des_____Configue_______________________
+
 const configureCors = require('./_configue/corsConfig');    // Importation de la configuration CORS
 const connectToDatabase = require('./_configue/dbConfig');  // Importation de la configuration de la base de données
+
+// fonction des import de configue
+connectToDatabase();// Connexion à la base de données
+configureCors(app);// Chargement de la configuration CORS depuis le fichier séparé
+
 
 app.use('/api', express.static(path.join(__dirname, '_public')));
 
@@ -19,9 +24,6 @@ app.use(express.json());                                    // Activation de l'a
 
 const route = require('./_routes/base.route')               // Importation des routes
 app.use('/api', route) // Utilisation des routes pour '/api'
-
-connectToDatabase();// Connexion à la base de données
-configureCors(app);// Chargement de la configuration CORS depuis le fichier séparé
 
 
 // Le serveur écoute sur le port spécifié dans les variables d'environnement
