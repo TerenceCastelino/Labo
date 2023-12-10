@@ -6,11 +6,14 @@ const app = express();              // Création d'une instance d'application Ex
 const server = require('http').createServer(app); // Création d'un serveur HTTP
 const socketIo = require('./socket.io')           // Importation du module socket.io
 socketIo(server)
+const path = require('path');
 // Utilisation de socket.io avec le serveur HTTP créé
 
 //_Configue_______________________
 const configureCors = require('./_configue/corsConfig');    // Importation de la configuration CORS
 const connectToDatabase = require('./_configue/dbConfig');  // Importation de la configuration de la base de données
+
+app.use('/api', express.static(path.join(__dirname, '_public')));
 
 app.use(express.json());                                    // Activation de l'analyse des données JSON
 
