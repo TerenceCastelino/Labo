@@ -89,6 +89,31 @@ const utilisateurController = {
       res.status(500).json({ error: 'Erreur de service' });
     }
   },
+  getByIdSocket: async (req, res) => {
+    try {
+      const id = 1
+
+      if (isNaN(id)) {
+
+        res.sendStatus(400);
+        return;
+      }
+      const utilisateur = await utilisateurService.oneUser(id);
+      console.log('controlleur utilisateur methode pour les socket', utilisateur.prenom);
+
+
+      if (!utilisateur) {
+        res.sendStatus(404);
+        return;
+      }
+
+      res.status(200).json(utilisateur.prenom);
+
+    } catch (error) {
+      console.error('Erreur lors de la récupération d\'un utilisateur par ID :', error);
+      res.status(500).json({ error: 'Erreur de service' });
+    }
+  },
 
   update: async (req, res) => {
     try {
