@@ -1,10 +1,15 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { join } = require('node:path');
 
 const authentificationService = require('../_services/authentification.service')
 const authentificationValidator = require('../_validators/utilisateur.validator')
 
 const authentificationController = {
+  get: async (req, res) => {
+
+    res.sendFile(join(__dirname, '../_public/loging.html'))
+  },
   register: async (req, res) => {
     // Récupération des données utilsateur
     const authData = req.body;
@@ -71,6 +76,7 @@ const authentificationController = {
   },
   login: async (req, res) => {
     try {
+
       const { emailUtilisateur, motsDePasse } = req.body;
       // console.log(emailUtilisateur, motsDePasse);
       // Vérification de l'existence de l'utilisateur via son login
@@ -124,6 +130,7 @@ const authentificationController = {
       if (clientJwt) {
         // Si l'insertion s'est correctement déroulée, on envoi les informations dans le header et au front en json
         res.setHeader('Authorization', `Bearer ${token}`);
+
         return res.status(200).json({ token });
       }
     } catch (err) {

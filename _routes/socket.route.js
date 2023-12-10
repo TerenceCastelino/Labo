@@ -1,10 +1,13 @@
 const socketRouter = require('express').Router();
-const socketController = require('../socket.io')
+const socketController = require('../_controllers/socket.controller')
 
-socketRouter.route('/socket')
+socketRouter.route('/')
 
+    .get(socketController.get)
 
+socketRouter.route('/2')
+    .get(socketController.get2)
 
+module.exports = socketRouter;
 
-module.exports = socketRouter
 
