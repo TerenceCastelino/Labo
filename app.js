@@ -18,7 +18,10 @@ connectToDatabase();// Connexion à la base de données
 configureCors(app);// Chargement de la configuration CORS depuis le fichier séparé
 
 
+// Utilisation d'Express pour servir des fichiers statiques depuis le répertoire '_public' lorsque des requêtes sont faites vers '/api'
+// afin de tester les sockets
 app.use('/api', express.static(path.join(__dirname, '_public')));
+
 
 app.use(express.json());                                    // Activation de l'analyse des données JSON
 
