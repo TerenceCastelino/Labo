@@ -3,7 +3,7 @@ const socketIO = require('socket.io');
 
 module.exports = (server) => {
     const io = socketIO(server, {
-        connectionStateRecovery: {} // Options de configuration pour Socket.io
+        connectionStateRecovery: {} // Options de configuration pour Socket.io//! pas geré 
     });
 
     const userSockets = {}; // Mappe les ID utilisateur aux sockets correspondantes

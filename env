@@ -1,0 +1,10 @@
+PORT = 3000
+NAME_DATABASE = nomDeLaDb
+NAME_LOGING = leLogin
+PASSWORD = codepassword
+BD_SERVER =
+    NODE_ENV = development
+JWT_SECRET = clefServer
+
+
+
