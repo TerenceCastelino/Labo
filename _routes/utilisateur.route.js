@@ -1,6 +1,6 @@
 const utilisateurRouter = require('express').Router();
 const utilisateurController = require('../_controllers/utilisateur.controller');
-const photoProfilController =  require('../_controllers/photoProfil.controller')
+const photoProfilController = require('../_controllers/photoProfil.controller')
 
 
 // Route pour gérer toutes les requêtes HTTP vers '/utilisateur'
@@ -13,7 +13,7 @@ utilisateurRouter.route('/')
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });
 
-  utilisateurRouter.route('/profil')
+utilisateurRouter.route('/profil')
   .get(photoProfilController.getAllProfilePhotos)
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
@@ -27,12 +27,12 @@ utilisateurRouter.route('/updateMDP/:id')
   });
 
 
-  utilisateurRouter.route('/:id/:idContenu/profil')
+utilisateurRouter.route('/:id/:idContenu/profil')
   .put(photoProfilController.updateImgProfil)
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
   });
-  
+
 // Route pour gérer les requêtes HTTP vers '/utilisateur/:id'
 utilisateurRouter.route('/:id')
   .get(utilisateurController.getById) // Récupérer un utilisateur par ID
@@ -40,6 +40,6 @@ utilisateurRouter.route('/:id')
   .delete(utilisateurController.delete) // Supprimer un utilisateur par ID
   .all((req, res) => {
     res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
-  }); 
+  });
 
 module.exports = utilisateurRouter;

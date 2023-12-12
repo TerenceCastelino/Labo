@@ -19,7 +19,7 @@ connectToDatabase();// Connexion à la base de données
 configureCors(app);// Chargement de la configuration CORS depuis le fichier séparé
 //! voici la fonction de l envois de mail
 // console.log('ici on teste la fonction sendmail', sendEmail('terence30prof@hotmal.com ', 'Sujet de l e-mail : mots de passe perdu', 'Contenu de l e-mail: le lien qui autologera et redirigera l utilisateur pour modifier son mdp'));
-sendEmail('terence30prof@hotmal.com ', 'Sujet de l e-mail : mots de passe perdu', 'Contenu de l e-mail: le lien qui autologera et redirigera l utilisateur pour modifier son mdp');
+// sendEmail('c.havrez@stag.technofuturtic.education ', 'Sujet de l e-mail : mots de passe perdu', 'Contenu de l e-mail: le lien qui autologuera et redirigera l utilisateur pour modifier son mdp');
 
 
 // Utilisation d'Express pour servir des fichiers statiques depuis le répertoire '_public' lorsque des requêtes sont faites vers '/api'

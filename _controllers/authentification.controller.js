@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const { join } = require('node:path');
 
 const authentificationService = require('../_services/authentification.service')
-const authentificationValidator = require('../_validators/utilisateur.validator')
+const authentificationValidator = require('../_validators/utilisateur.validator');
+const { log } = require('node:console');
 
 const authentificationController = {
   get: async (req, res) => {
@@ -78,9 +79,11 @@ const authentificationController = {
     try {
 
       const { emailUtilisateur, motsDePasse } = req.body;
-      // console.log(emailUtilisateur, motsDePasse);
+
       // Vérification de l'existence de l'utilisateur via son login
       const user = await authentificationService.exist(emailUtilisateur);
+      console.log('on regarde si le user existe debut_______________________________________________', user);
+      console.log('on regarde si le user existe fin_______________________________________________');
       if (!user) {
         // Si l'utilisateur n'existe pas, renvoi une réponse 401 (Unauthorized)
         return res.status(401).json({ message: 'Utilisateur non trouvé' })
@@ -88,10 +91,13 @@ const authentificationController = {
 
       // Vérification de l'existence d'un token (jwt) pour cet utilisateur
       const existingToken = await authentificationService.getJwt(user.idUtilisateur);
+
+      console.log('on regarde si le tocken existe debut_______________________________________________', existingToken);
+      console.log('on regarde si le user token fin_______________________________________________');
       if (existingToken.jwt) {
         // Vérification de la validité du token (jwt)
         const tokenValid = await authentificationService.verifyJwt(existingToken.jwt);
-
+        console.log('le token est il valide ', tokenValid);
         if (tokenValid) {
           // Le token (jwt) est valide, envoi de l'information dans le header de la requête
           res.setHeader('Authorization', `Bearer ${existingToken.jwt}`);
@@ -113,7 +119,10 @@ const authentificationController = {
       const payload = {
         userId: user.idUtilisateur,
         login: user.emailUtilisateur
+
       };
+      console.log('iiiiiiiiiici');
+      console.log('le playload', payload);
 
       const options = {
         expiresIn: '2d',
@@ -122,6 +131,7 @@ const authentificationController = {
       // Signer le token (jwt) avec le SECRET
       const secret = process.env.JWT_SECRET;
       const token = jwt.sign(payload, secret, options);
+      console.log('signature du tocken ', payload, secret, options);
 
       // Stocker le token (jwt) dans la DB
       const clientJwt = await authentificationService.addJwt(token, user.idUtilisateur);

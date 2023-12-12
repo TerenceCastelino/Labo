@@ -59,6 +59,7 @@ const utilisateurController = {
   getAll: async (req, res) => {
     try {
       const utilisateur = await utilisateurService.allUser();
+      console.log(utilisateur);
       res.status(200).json(utilisateur);
     } catch (error) {
       console.error('Erreur lors de la récupération des utilisateurs :', error);
@@ -76,7 +77,7 @@ const utilisateurController = {
       }
 
       const utilisateur = await utilisateurService.oneUser(id);
-
+      console.log(utilisateur.emailUtilisateur);
 
       if (!utilisateur) {
         res.sendStatus(404);
@@ -151,7 +152,27 @@ const utilisateurController = {
       console.error('Erreur lors de la suppression d\'un utilisateur :', error);
       res.status(400).json({ error: 'Erreur lors de la suppression' });
     }
+  },
+
+
+  // Utiliser la méthode getAll du contrôleur pour récupérer tous les utilisateurs
+  getAllMail: async (req, res) => {
+    try {
+      // Appeler la méthode allUser du service utilisateur
+      const utilisateurs = await utilisateurService.allUser();
+
+      // Récupérer uniquement les emails des utilisateurs
+      const emailsUtilisateurs = utilisateurs.map(utilisateur => utilisateur.emailUtilisateur);
+      console.log(emailsUtilisateurs);
+      // Retourner les emails des utilisateurs en tant que réponse
+      res.status(200).json(emailsUtilisateurs);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des emails des utilisateurs :', error);
+      res.status(500).json({ error: 'Erreur de service' });
+    }
   }
+
+
 };
 
 // 4. Exportation du contrôleur spécifique pour être utilisé ailleurs dans l'application

@@ -1,4 +1,4 @@
-// const socketService = require('../_services/message.service')
+const socketIo = require('../socket.io')
 const utilisateurController = require('./utilisateur.controller')
 const { join } = require('node:path');
 
@@ -10,7 +10,7 @@ const socketController = {
 
     },
     get2: async (req, res) => {
-
+        socketIo
     }
 
 }

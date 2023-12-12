@@ -10,7 +10,8 @@ socketRouter.route('/')
     });
 
 socketRouter.route('/2')
-    .get(socketController.get2).all((req, res) => {
+    .get(socketController.get2)
+    .all((req, res) => {
         res.sendStatus(405); // Pour tout autre verbe HTTP, renvoyer une erreur (Méthode non autorisée)
     });
 
