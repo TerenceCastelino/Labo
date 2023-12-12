@@ -13,8 +13,6 @@ const passwordPercuController = {
         try {
             const { emailUtilisateur } = req.body;
 
-
-
             const user = await authentificationService.exist(emailUtilisateur);
             const recupeId = user.idUtilisateur
             const contenuEmail = `
@@ -25,10 +23,7 @@ const passwordPercuController = {
               Merci,
               Votre équipe
             `
-            console.log("1_________", user.jwt);
-
             const existingToken = await authentificationService.getJwt(user.idUtilisateur);
-            console.log("2_________", user.jwt);
 
             if (!user) {
                 // Si l'utilisateur n'existe pas, renvoi une réponse 401 (Unauthorized)
@@ -38,7 +33,6 @@ const passwordPercuController = {
 
             passwordPercuController.updateMdp(req, res, recupeId)
 
-
             // Vérification de l'existence d'un token (jwt) pour cet utilisateur
             // const existingToken = await authentificationService.getJwt(user.idUtilisateur);
             console.log("3_________", user.jwt);
@@ -47,7 +41,6 @@ const passwordPercuController = {
                 console.log("4_________", user.jwt);
                 // Vérification de la validité du token (jwt)
                 const tokenValid = await authentificationService.verifyJwt(existingToken.jwt);
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 if (tokenValid) {
 
                     sendEmail(emailUtilisateur, 'Sujet de l e-mail : mots de passe perdu', contenuEmail);
@@ -56,7 +49,6 @@ const passwordPercuController = {
                     return res.status(200).json({ token: existingToken.jwt, idUtilisateur: user.idUtilisateur, z: '11111111111111111' });
                 }
             }
-
 
             // Vérification du password fourni par l'utilisateur avec le password hashé dans la DB
             const passwordMatch = await bcrypt.compareSync(user.motsDePasse, user.hashedPassword);
@@ -76,7 +68,6 @@ const passwordPercuController = {
 
             };
 
-
             const options = {
                 expiresIn: '1h',
             };
@@ -86,13 +77,8 @@ const passwordPercuController = {
             const token = jwt.sign(payload, secret, options);
             console.log("6_________", user.jwt);
 
-
-
-
             // Stocker le token (jwt) dans la DB
             const clientJwt = await authentificationService.addJwt(token, user.idUtilisateur);
-
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             if (clientJwt) {
                 sendEmail(emailUtilisateur, 'Sujet de l e-mail : mots de passe perdu', contenuEmail);
@@ -106,7 +92,8 @@ const passwordPercuController = {
             console.error(err);
             res.sendStatus(404);
         }
-    }, updateMdp: async (req, res, recupeId) => {
+    },
+    updateMdp: async (req, res, recupeId) => {
         try {
             const id = recupeId
 
