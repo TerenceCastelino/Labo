@@ -82,27 +82,6 @@ const evenementController = {
             res.status(500).json({ error: 'Erreur lors de la suppression de l\'événement.' });
         }
     },
-
-    //??
-    // patchEvent: async (req, res) => {
-    //     try {
-    //         const { idGroupe, idCreateur } = req.params
-    //         // const event = await evenementService.getOneEvent(idGroupe)
-    //         const eventData = req.body
-    //         const validateData = await eventValidator.validate(eventData)
-    //         const updateEvent = await evenementService.patchEvent(idGroupe, idCreateur, validateData)
-
-    //         if (!updateEvent) {
-    //             res.sendStatus(404)
-    //             return
-    //         }
-    //         res.status(200).json(updateEvent)
-    //     } catch (error) {
-    //         console.error('Erreur lors de la mise à jour de l evenement :', error);
-    //         res.status(400).json({ error: 'Erreur lors de la mise à jour' });
-    //     }
-
-    // },
     // Contrôleur pour gérer la mise à jour d'un événement
     patchEvent: async (req, res) => {
         try {
